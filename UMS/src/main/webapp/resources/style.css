@@ -1,0 +1,44 @@
+.bd {
+    border: 1px solid black;
+}
+
+.b_shadow {
+    box-shadow: 1px 1px 2px #959494b5;
+}
+
+/* navbar */
+.b_navinputheight {
+    height: 30px;
+}
+.b_modified_navlink {
+    padding: 0.25rem 0.35rem !important;
+}
+
+.b_fix {
+    color: unset !important;
+    border-color: unset !important;
+    padding: unset !important;
+    font-size: unset !important;
+    line-height: unset !important;
+    background-color: unset !important;
+    border: unset !important;
+    border-radius: unset !important;
+
+    color: rgba(0, 0, 0, 0.9) !important;
+    display: inline-block;
+    padding-top: 0.3125rem !important;
+    padding-bottom: 0.3125rem !important;
+    margin-right: 1rem !important;
+    font-size: 1.25rem !important;
+    line-height: inherit !important;
+    white-space: nowrap !important;
+}
+
+/* for device of screen and device with max screen width 992px */
+@media only screen and (max-width: 992px) {
+    .b_width_100_xs_lg {
+        width: 100%;
+    }
+}
+
+/* navbar */

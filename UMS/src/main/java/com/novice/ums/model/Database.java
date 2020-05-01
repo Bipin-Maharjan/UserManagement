@@ -34,7 +34,7 @@ public class Database {
     
     private void setConnection(){
         String user ="root";
-        String url = "jdbc:mysql://localhost:3308/java";
+        String url = "jdbc:mysql://localhost:3308/ums";
         String password = "";
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
