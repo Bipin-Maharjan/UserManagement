@@ -8,25 +8,20 @@
       </button>
       <a class="navbar-brand navbar-toggler b_fix" href="#">
         <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
-        Navbar
+        User Management System
       </a>
       <div class="collapse navbar-collapse flex-column" id="navbar">
         <ul class="navbar-nav nav w-100 align-items-center">
           <li class="nav-item">
             <a class="navbar-brand d-none d-lg-inline-block" href="#">
               <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
-              Navbar
+              User Management System
             </a>
           </li>
-          <li class="nav-item text-right my-2 b_width_100_xs_lg dropdown" style="flex-grow: 1;">
-            <a class="navbar-brand mr-0" style="font-size: 1rem;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <li class="nav-item text-right my-2 b_width_100_xs_lg" style="flex-grow: 1;">
+            <a class="navbar-brand mr-0" style="font-size: 1rem;" href="#">
               <span class="align-middle btn btn-primary">About Us</span>
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="left: unset; right: 0;">
-              <a class="dropdown-item" href="#">History</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Logout</a>
-            </div>
           </li>
         </ul>
       </div>

@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author HP
+ * Controller class is only used for handling the user interaction / user input and redirect to respective class
+ * VIEW: Is a jsp page and is only a UI page
  */
-@WebServlet(name = "ProfileController", urlPatterns = {"/profile"})
+@WebServlet(name = "ProfileController", urlPatterns = {"/profile/*"})
 public class ProfileController extends HttpServlet {
 
     @Override

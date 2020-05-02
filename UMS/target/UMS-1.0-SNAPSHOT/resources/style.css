@@ -8,7 +8,7 @@
 
 /* navbar */
 .b_navinputheight {
-    height: 30px;
+    height: 30px !important;
 }
 .b_modified_navlink {
     padding: 0.25rem 0.35rem !important;

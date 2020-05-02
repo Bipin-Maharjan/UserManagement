@@ -8,6 +8,7 @@ package com.novice.ums.model;
 /**
  *
  * @author HP
+ * This is BEANS Class just to hold the data
  */
 public class User {
     private String username;

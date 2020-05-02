@@ -12,6 +12,7 @@ import java.sql.SQLException;
 /**
  *
  * @author HP
+ * This Database class is used to get a connection
  */
 public class Database {
     private static Database db=null;
