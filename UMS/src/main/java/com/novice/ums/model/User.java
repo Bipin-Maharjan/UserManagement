@@ -28,6 +28,25 @@ public class User {
     private String bio;
     private String status;
 
+    public User(){
+        this.username = null;
+        this.password = null;
+        this.first_name = null;
+        this.last_name = null;
+        this.role = null;
+        this.email = null;
+        this.phone_number = null;
+        this.date_of_birth = null;
+        this.gender = null;
+        this.question1 = null;
+        this.answer1 = null;
+        this.question2 = null;
+        this.answer2 = null;
+        this.profile_picture = null;
+        this.bio = null;
+        this.status = null;
+    }
+    
     public User(String username, String password, String first_name, 
             String last_name, String role, String email, String phone_number, 
             String date_of_birth, String gender, String question1, String answer1, 

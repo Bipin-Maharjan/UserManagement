@@ -1,4 +1,4 @@
 com\novice\ums\model\User.class
-com\novice\ums\model\History.class
 com\novice\ums\model\Database.class
 com\novice\ums\profile\ProfileController.class
+com\novice\ums\model\History.class
