@@ -35,13 +35,21 @@ public class UserDAO {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             user = null;
         }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return user;
     }
 
     //to update the user
     public User updateUser(User updateUser, String username) {
+        Connection con = null;
         try {
-            Connection con = Database.getDatabase().getConnection();
+            con = Database.getDatabase().getConnection();
             String SQL = "update user set";
 
             if (updateUser.getUsername() != null) {
@@ -105,6 +113,13 @@ public class UserDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             updateUser = null;
+        }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return updateUser;
     }
