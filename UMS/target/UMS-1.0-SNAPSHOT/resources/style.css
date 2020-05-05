@@ -34,6 +34,27 @@
     white-space: nowrap !important;
 }
 
+#b_profil_container img:hover {
+    opacity: 0.5;
+    z-index: 501;
+}
+
+#b_profilepic:hover + i{
+    display: block;
+    z-index: 500;
+}
+
+#b_addicon{
+    display: none;
+    position: absolute;
+    top:29%;
+    right:43%;
+    font-size:50px;
+}
+#b_uploadprofilepic{
+    display:none;
+}
+
 /* for device of screen and device with max screen width 992px */
 @media only screen and (max-width: 992px) {
     .b_width_100_xs_lg {

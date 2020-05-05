@@ -46,8 +46,13 @@ public class Database {
         }
     }
 
-    public Connection getConnection() {
-        return con;
+    public Connection getConnection() throws SQLException {
+        if(this.con == null){
+            throw new SQLException("No connection");
+        }
+        else{
+            return this.con;
+        }
     }
         
 }

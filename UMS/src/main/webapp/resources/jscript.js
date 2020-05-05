@@ -3,5 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+$('#b_profilepic, #b_addicon').click(function () {
+    $('#b_uploadprofilepic').click();
+});
 
-
+$("#b_uploadprofilepic").change(function(){
+   $("#b_uploadprofile").submit(); 
+});
