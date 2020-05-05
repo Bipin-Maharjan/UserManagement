@@ -8,10 +8,13 @@ package com.novice.ums.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author HP
+ * This Database class is used to get a connection
  */
 public class Database {
     private static Database db=null;
@@ -33,20 +36,28 @@ public class Database {
     }
     
     private void setConnection(){
-        String user ="root";
-        String url = "jdbc:mysql://localhost:3308/ums";
-        String password = "";
-        try{
+            String user ="root";
+            String url = "jdbc:mysql://localhost:3308/ums";
+            String password = "";
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.con = DriverManager.getConnection(url, user, password);
-        }
-        catch(ClassNotFoundException | SQLException ex){
-            ex.printStackTrace();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public Connection getConnection() {
-        return con;
+    public Connection getConnection() throws SQLException {
+        if(this.con == null ||  this.con.isClosed()){
+            setConnection();
+            if(this.con == null){
+                throw new SQLException("No connection");
+            }
+            return this.con;
+        }
+        else{
+            return this.con;
+        }
     }
         
 }
