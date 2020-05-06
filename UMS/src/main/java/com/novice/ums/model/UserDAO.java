@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,8 +27,9 @@ public class UserDAO {
         Connection con = null;
         try {
             con = Database.getDatabase().getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("Select * from user where username = '" + username + "'");
+            PreparedStatement st = con.prepareStatement("Select * from user where username = ?");
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
             fillUser(user, rs);
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,66 +48,141 @@ public class UserDAO {
     //to update the user
     public User updateUser(User updateUser, String username) {
         Connection con = null;
+        List<String> changes = new ArrayList<String>();
         try {
             con = Database.getDatabase().getConnection();
-            String SQL = "update user set";
-
-            if (updateUser.getUsername() != null) {
-                SQL = SQL + " username = '" + updateUser.getUsername() + "'";
-            } else {
-                SQL = SQL + " username = '" + username + "'";
-            }
+            String sql = "update user set username = ?";
+            changes.add("username");
+                
             if (updateUser.getFirst_name() != null) {
-                SQL = SQL + ", first_name = '" + updateUser.getFirst_name() + "'";
+                sql = sql + ", first_name = ?";
+                changes.add("first_name");
             }
             if (updateUser.getLast_name() != null) {
-                SQL = SQL + ", last_name = '" + updateUser.getLast_name() + "'";
+                sql = sql + ", last_name = ?";
+                changes.add("last_name");
             }
             if (updateUser.getQuestion1() != null) {
-                SQL = SQL + ", question1 = '" + updateUser.getQuestion1() + "'";
+                sql = sql + ", question1 = ?";
+                changes.add("question1");
             }
             if (updateUser.getQuestion2() != null) {
-                SQL = SQL + ", question2 = '" + updateUser.getQuestion2() + "'";
+                sql = sql + ", question2 = ?";
+                changes.add("question2");
             }
             if (updateUser.getAnswer1() != null) {
-                SQL = SQL + ", answer1 = '" + updateUser.getAnswer1() + "'";
+                sql = sql + ", answer1 = ?";
+                changes.add("answer1");
             }
             if (updateUser.getAnswer2() != null) {
-                SQL = SQL + ", answer2 = '" + updateUser.getAnswer2() + "'";
+                sql = sql + ", answer2 = ?";
+                changes.add("answer2");
             }
             if (updateUser.getEmail() != null) {
-                SQL = SQL + ", email = '" + updateUser.getEmail() + "'";
+                sql = sql + ", email = ?";
+                changes.add("email");
             }
             if (updateUser.getBio() != null) {
-                SQL = SQL + ", bio = '" + updateUser.getBio() + "'";
+                sql = sql + ", bio = ?";
+                changes.add("bio");
             }
             if (updateUser.getDate_of_birth() != null) {
-                SQL = SQL + ", date_of_birth = '" + updateUser.getDate_of_birth() + "'";
+                sql = sql + ", date_of_birth = ?";
+                changes.add("date_of_birth");
             }
             if (updateUser.getProfile_picture() != null) {
-                SQL = SQL + ", profile_picture = '" + updateUser.getProfile_picture() + "'";
+                sql = sql + ", profile_picture = ?";
+                changes.add("profile_picture");
             }
             if (updateUser.getPhone_number() != null) {
-                SQL = SQL + ", phone_number = '" + updateUser.getPhone_number() + "'";
+                sql = sql + ", phone_number = ?";
+                changes.add("phone_number");
             }
             if (updateUser.getPassword() != null) {
-                SQL = SQL + ", password = '" + updateUser.getPassword() + "'";
+                sql = sql + ", password = ?";
+                changes.add("password");
             }
             if (updateUser.getGender() != null) {
-                SQL = SQL + ", gender = '" + updateUser.getGender() + "'";
+                sql = sql + ", gender = ?";
+                changes.add("gender");
             }
             if (updateUser.getRole() != null) {
-                SQL = SQL + ", role = '" + updateUser.getRole() + "'";
+                sql = sql + ", role = ?";
+                changes.add("role");
             }
             if (updateUser.getStatus() != null) {
-                SQL = SQL + ", status = '" + updateUser.getStatus() + "'";
+                sql = sql + ", status = ?";
+                changes.add("status");
             }
 
-            SQL = SQL + " where username = '" + username + "';";
+            sql = sql + " where username = ? ;";
+            changes.add("current_username");
 
-            PreparedStatement st = con.prepareStatement(SQL);
-            st.executeUpdate();
+            PreparedStatement st = con.prepareStatement(sql);
             
+            for(String change : changes){
+                
+                switch(change){
+                    case "username":
+                        if(updateUser.getUsername() == null){
+                            st.setString(changes.indexOf(change)+1, username);
+                        }
+                        else{
+                            st.setString(changes.indexOf(change)+1, updateUser.getUsername());
+                        }
+                        break;
+                    case "first_name":
+                        st.setString(changes.indexOf(change)+1, updateUser.getFirst_name());
+                        break;
+                    case "last_name":
+                        st.setString(changes.indexOf(change)+1, updateUser.getLast_name());
+                        break;
+                    case "question1":
+                        st.setString(changes.indexOf(change)+1, updateUser.getQuestion1());
+                        break;
+                    case "question2":
+                        st.setString(changes.indexOf(change)+1, updateUser.getQuestion2());
+                        break;
+                    case "answer1":
+                        st.setString(changes.indexOf(change)+1, updateUser.getAnswer1());
+                        break;
+                    case "answer2":
+                        st.setString(changes.indexOf(change)+1, updateUser.getAnswer2());
+                        break;
+                    case "email":
+                        st.setString(changes.indexOf(change)+1, updateUser.getEmail());
+                        break;
+                    case "bio":
+                        st.setString(changes.indexOf(change)+1, updateUser.getBio());
+                        break;
+                    case "date_of_birth":
+                        st.setString(changes.indexOf(change)+1, updateUser.getDate_of_birth());
+                        break;
+                    case "profile_picture":
+                        st.setString(changes.indexOf(change)+1, updateUser.getProfile_picture());
+                        break;
+                    case "phone_number":
+                        st.setString(changes.indexOf(change)+1, updateUser.getPhone_number());
+                        break;
+                    case "password":
+                        st.setString(changes.indexOf(change)+1, updateUser.getPassword());
+                        break;
+                    case "gender":
+                        st.setString(changes.indexOf(change)+1, updateUser.getGender());
+                        break;
+                    case "role":
+                        st.setString(changes.indexOf(change)+1, updateUser.getRole());
+                        break;
+                    case "status":
+                        st.setString(changes.indexOf(change)+1, updateUser.getStatus());
+                        break;  
+                    case "current_username":
+                        st.setString(changes.indexOf(change)+1, username);
+                        break;  
+                }   
+            }
+            
+            st.executeUpdate();            
             updateUser = getUser(username);
             
         } catch (SQLException ex) {
@@ -122,6 +197,27 @@ public class UserDAO {
             }
         }
         return updateUser;
+    }
+    
+    public boolean deleteUser(String username){
+        Connection con = null;
+        try {
+            con = Database.getDatabase().getConnection();
+            PreparedStatement st = con.prepareStatement("Delete from user where username = ?");
+            st.setString(1, username);
+            st.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     // Map the result data with objec. Called by getUser function

@@ -18,9 +18,9 @@
     <div class="container py-4">
       <!-- history button -->
       <div class="row">
-        <% if(user != null && user.getRole() == "admin"){ %>
+        <% if(user != null && user.getRole().equalsIgnoreCase("admin")){ %>
         <div class="col-12 text-center">
-          <% if(otherUser.getStatus()=="blocked"){ %>
+          <% if(otherUser.getStatus().equalsIgnoreCase("blocked")){ %>
           <p class="h6 font-weight-bold text-danger text-center d-md-inline-block"> User is blocked </p>
           <%}%>
           <button class="btn btn-info py-1 d-md-inline-block float-md-right mr-2 mb-md-0 mb-2">View History</button>
@@ -29,8 +29,8 @@
         <div class="col-12 text-center" id="error">
           <% List errors = (List)request.getAttribute("errors");%>
           <%  for(Object error: errors){ %>
-          <span class="text-danger">"<%= error %>", </span>
-          <%}%>
+          <span class="text-danger">"<%= error %>"<%= errors.size()==1?"":"," %> </span>
+          <%} errors.removeAll(errors);%>
         </div>
       </div>
       <!-- history button end -->
@@ -55,16 +55,16 @@
           <div class="border border-dark rounded">
             <!-- heading bar -->
             <div class="border border-dark rounded text-center">
-              <p class="m-0 d-inline-block font-weight-bold" style="font-size: 1rem;">About Me</p>
+              <p class="m-0 d-inline-block font-weight-bold" style="font-size: 1rem;">About Me </p>
               <div class="d-inline-block float-right mr-2">
-                <% if(user.getRole() == "admin"){ %>
+                <% if(user.getRole().equalsIgnoreCase("admin") && !user.getUsername().equalsIgnoreCase(otherUser.getUsername())){ %>
                 <a href="#" class="text-dark" id="editDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-caret-down align-middle"></i>
                 </a>
                 <div class="dropdown-menu border-dark" aria-labelledby="editDropdown">
-                  <a class="dropdown-item" href="#">Block User</a>
+                  <a class="dropdown-item" href="profile?u=<%= otherUser.getStatus().equalsIgnoreCase("active")?otherUser.getUsername()+"/blockrequest":otherUser.getUsername()+"/activerequest" %>"><%= otherUser.getStatus().equalsIgnoreCase("active")?"Block User":"Activate User" %></a>
                   <div class="dropdown-divider border-dark"></div>
-                  <a class="dropdown-item" href="#">Delete User</a>
+                  <a class="dropdown-item" href="profile?u=<%= otherUser.getUsername()+"/deleterequest"%>">Delete User</a>
                 </div>
                 <%}%>
               </div>

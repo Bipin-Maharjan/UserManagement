@@ -34,6 +34,16 @@
     white-space: nowrap !important;
 }
 
+/* for device of screen and device with max screen width 992px */
+@media only screen and (max-width: 992px) {
+    .b_width_100_xs_lg {
+        width: 100%;
+    }
+}
+/* navbar ends*/
+
+/*profile*/
+
 #b_profil_container img:hover {
     opacity: 0.5;
     z-index: 501;
@@ -55,11 +65,8 @@
     display:none;
 }
 
-/* for device of screen and device with max screen width 992px */
-@media only screen and (max-width: 992px) {
-    .b_width_100_xs_lg {
-        width: 100%;
-    }
+#b_addicon:hover ,#b_profilepic:hover{
+    cursor: pointer;    
 }
 
-/* navbar */
+/*profile ends*/

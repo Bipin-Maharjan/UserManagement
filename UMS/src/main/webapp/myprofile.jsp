@@ -19,14 +19,6 @@
       <!-- history button -->
       <div class="row">
         <% User user = (User) session.getAttribute("user"); %>
-        <% if(user != null && user.getRole() == "admin"){ %>
-        <div class="col-12 text-center">
-          <% if(user.getStatus()=="blocked"){ %>
-          <p class="h6 font-weight-bold text-danger text-center d-md-inline-block"> User is blocked </p>
-          <%}%>
-          <button class="btn btn-info py-1 d-md-inline-block float-md-right mr-2 mb-md-0 mb-2">View History</button>
-        </div>
-        <% } %>
         <div class="col-12 text-center mb-2" id="error">
           <% List errors = (List) request.getAttribute("errors");%>
           <%  for(Object error: errors){ %>
@@ -62,7 +54,7 @@
             <div class="border border-dark rounded text-center">
               <p class="m-0 d-inline-block font-weight-bold" style="font-size: 1rem;">About Me</p>
               <div class="d-inline-block float-right mr-2">
-                <a href="#" class="text-dark"><i class="fas fa-pencil-alt"></i></a>
+                <a href="profile/editprofile" class="text-dark"><i class="fas fa-pencil-alt"></i></a>
               </div>
             </div>
             <!-- heading bar ends-->
