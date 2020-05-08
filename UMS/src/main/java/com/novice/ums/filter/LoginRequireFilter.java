@@ -5,8 +5,6 @@
  */
 package com.novice.ums.filter;
 
-import com.novice.ums.model.User;
-import com.novice.ums.model.UserDAO;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -22,10 +20,10 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author HP
- * This filter is for checking is user is logged in not to access the profile page
+ * This filter is for checking if user is logged in not to access the further page
  */
 @WebFilter(urlPatterns = {"/profile/*"})
-public class LoginFilter implements Filter{
+public class LoginRequireFilter implements Filter{
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
@@ -38,10 +36,7 @@ public class LoginFilter implements Filter{
         HttpSession session = req.getSession(); 
         
         if(session.getAttribute("user") == null){
-            User user = new UserDAO().getUser("dipak.raii");
-            session.setAttribute("user", user);
-            resp.getWriter().println("Session Loading done");
-//            resp.sendRedirect("login.jsp");
+            resp.sendRedirect(req.getContextPath()+"/login");
         }
         else{
             chain.doFilter(request, response);

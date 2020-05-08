@@ -5,6 +5,7 @@
  */
 package com.novice.ums.profile;
 
+import com.novice.ums.helper.Helper;
 import com.novice.ums.model.HistoryDAO;
 import com.novice.ums.model.User;
 import com.novice.ums.model.UserDAO;
@@ -301,18 +302,15 @@ public class ProfileController extends HttpServlet {
     }
             
     private void changePassword(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        /*
-        * Remaining: Hash new passoword befor storing in database
-        */
-        
         List list  = new ArrayList();
         
         String currentPassword,newPassword,confirmPassword;
         HttpSession session = request.getSession();
         
-        currentPassword = request.getParameter("currentpass");
-        newPassword = request.getParameter("newpass");
-        confirmPassword = request.getParameter("confirmpass");
+        currentPassword = Helper.hashPassword(request.getParameter("currentpass"));
+        newPassword = Helper.hashPassword(request.getParameter("newpass"));
+        confirmPassword = Helper.hashPassword(request.getParameter("confirmpass"));
+        
         
         User user = (User) session.getAttribute("user");
         
@@ -323,20 +321,25 @@ public class ProfileController extends HttpServlet {
             return;
         }
         
-        if(newPassword.equals(confirmPassword) && newPassword.length() > 8){
-            if(updateUser.getPassword().equals(currentPassword)){
-                updateUser = new User();
-                updateUser.setPassword(newPassword);
-                updateUser = dao.updateUser(updateUser, user.getUsername());
-                if(updateUser == null){
-                    response.sendError(500, "Error while changing password");
-                    return;
+        if(newPassword.equals(confirmPassword)){
+            if(request.getParameter("newpass").length() >= 8){
+                if(updateUser.getPassword().equals(currentPassword)){
+                    updateUser = new User();
+                    updateUser.setPassword(newPassword);
+                    updateUser = dao.updateUser(updateUser, user.getUsername());
+                    if(updateUser == null){
+                        response.sendError(500, "Error while changing password");
+                        return;
+                    }
+                    //keeping log on users account 
+                    new HistoryDAO().keepLog(updateUser.getUsername(), "change password","Password changed", request.getRemoteAddr());
                 }
-                //keeping log on users account 
-                new HistoryDAO().keepLog(updateUser.getUsername(), "change password","Password changed", request.getRemoteAddr());
+                else{
+                    list.add("Current password did not matched.");
+                }
             }
             else{
-                list.add("Current password did not matched.");
+                list.add("Password length is less than 8 character.");
             }
         }
         else{
