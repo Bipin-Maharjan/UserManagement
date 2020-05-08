@@ -38,10 +38,10 @@ public class LoginFilter implements Filter{
         HttpSession session = req.getSession(); 
         
         if(session.getAttribute("user") == null){
-            User user = new UserDAO().getUser("dipak.rai");
+            User user = new UserDAO().getUser("dipak.raii");
             session.setAttribute("user", user);
             resp.getWriter().println("Session Loading done");
-//            resp.sendRedirect("index.html");
+//            resp.sendRedirect("login.jsp");
         }
         else{
             chain.doFilter(request, response);

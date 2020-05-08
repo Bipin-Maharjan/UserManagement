@@ -62,9 +62,9 @@
                   <i class="fas fa-caret-down align-middle"></i>
                 </a>
                 <div class="dropdown-menu border-dark" aria-labelledby="editDropdown">
-                  <a class="dropdown-item" href="profile?u=<%= otherUser.getStatus().equalsIgnoreCase("active")?otherUser.getUsername()+"/blockrequest":otherUser.getUsername()+"/activerequest" %>"><%= otherUser.getStatus().equalsIgnoreCase("active")?"Block User":"Activate User" %></a>
+                  <a class="dropdown-item" href="profile?user=<%= otherUser.getStatus().equalsIgnoreCase("active")?otherUser.getUsername()+"/blockrequest":otherUser.getUsername()+"/activerequest" %>"><%= otherUser.getStatus().equalsIgnoreCase("active")?"Block User":"Activate User" %></a>
                   <div class="dropdown-divider border-dark"></div>
-                  <a class="dropdown-item" href="profile?u=<%= otherUser.getUsername()+"/deleterequest"%>">Delete User</a>
+                  <a class="dropdown-item" href="profile?user=<%= otherUser.getUsername()+"/deleterequest"%>">Delete User</a>
                 </div>
                 <%}%>
               </div>

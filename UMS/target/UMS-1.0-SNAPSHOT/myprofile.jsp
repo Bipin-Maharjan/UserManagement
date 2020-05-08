@@ -22,7 +22,7 @@
         <div class="col-12 text-center mb-2" id="error">
           <% List errors = (List) request.getAttribute("errors");%>
           <%  for(Object error: errors){ %>
-          <span class="text-danger">"<%= error %>", </span>
+          <span class="text-danger">"<%= error %>"<%= errors.size()==1?"":"," %></span>
           <%} errors.removeAll(errors);%>
         </div>
       </div>
@@ -38,7 +38,7 @@
             <%}%>
             <i id="b_addicon" class="fas fa-plus-circle"></i>
           </div>
-          <form method="post" id="b_uploadprofile" action="profile" enctype="multipart/form-data">
+          <form method="post" id="b_uploadprofile" action="profile/uploadprofilepicture" enctype="multipart/form-data">
             <input id="b_uploadprofilepic" type="file" name="profile_picture" accept="image/jpeg,image/png">
           </form>
           <p class="h4"><%= user.getFirst_name()+" "+user.getLast_name() %></p>

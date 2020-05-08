@@ -8,7 +8,6 @@ package com.novice.ums.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +22,20 @@ public class UserDAO {
 
     // Fetch user from database and map the resultset data with object;
     public User getUser(String username) {
-        User user = new User();
+        User user = null;
         Connection con = null;
         try {
             con = Database.getDatabase().getConnection();
             PreparedStatement st = con.prepareStatement("Select * from user where username = ?");
             st.setString(1, username);
             ResultSet rs = st.executeQuery();
-            fillUser(user, rs);
+            rs.next();
+            
+            user = new User(rs.getString("username"),rs.getString("password"),rs.getString("first_name"),rs.getString("last_name"),
+            rs.getString("role"),rs.getString("email"),rs.getString("phone_number"),rs.getString("date_of_birth"),rs.getString("gender")
+            ,rs.getString("question1"),rs.getString("answer1"),rs.getString("question2"),rs.getString("answer2"),rs.getString("profile_picture"),
+                    rs.getString("bio"),rs.getString("status"));
+            
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             user = null;
@@ -182,8 +187,13 @@ public class UserDAO {
                 }   
             }
             
-            st.executeUpdate();            
-            updateUser = getUser(username);
+            st.executeUpdate();
+            if(updateUser.getUsername() == null){
+                updateUser = getUser(username);
+            }
+            else{
+                updateUser = getUser(updateUser.getUsername());
+            }
             
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -219,73 +229,29 @@ public class UserDAO {
             }
         }
     }
-
-    // Map the result data with objec. Called by getUser function
-    private void fillUser(User user, ResultSet rs) throws SQLException {
-        List<String> col_name = getColumns(rs);
-        rs.next();
-        if (col_name.contains("username")) {
-            user.setUsername(rs.getString("username"));
+    
+    public boolean isUsernameAvailable(String username){
+        Connection con=null;
+        boolean value = false;
+        try {
+            con = Database.getDatabase().getConnection();
+            PreparedStatement st = con.prepareStatement("select * from user where username = ? ;");
+            st.setString(1,username);
+            ResultSet rs = st.executeQuery();
+            rs.last();
+            value = rs.getRow() == 0? true:false;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            value = false;
         }
-        if (col_name.contains("first_name")) {
-            user.setFirst_name(rs.getString("first_name"));
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        if (col_name.contains("last_name")) {
-            user.setLast_name(rs.getString("last_name"));
-        }
-        if (col_name.contains("question1")) {
-            user.setQuestion1(rs.getString("question1"));
-        }
-        if (col_name.contains("question2")) {
-            user.setQuestion2(rs.getString("question2"));
-        }
-        if (col_name.contains("answer1")) {
-            user.setAnswer1(rs.getString("answer1"));
-        }
-        if (col_name.contains("answer2")) {
-            user.setAnswer2(rs.getString("answer2"));
-        }
-        if (col_name.contains("email")) {
-            user.setEmail(rs.getString("email"));
-        }
-        if (col_name.contains("bio")) {
-            user.setBio(rs.getString("bio"));
-        }
-        if (col_name.contains("date_of_birth")) {
-            user.setDate_of_birth(rs.getString("date_of_birth"));
-        }
-        if (col_name.contains("profile_picture")) {
-            user.setProfile_picture(rs.getString("profile_picture"));
-        }
-        if (col_name.contains("phone_number")) {
-            user.setPhone_number(rs.getString("phone_number"));
-        }
-        if (col_name.contains("password")) {
-            user.setPassword(rs.getString("password"));
-        }
-        if (col_name.contains("gender")) {
-            user.setGender(rs.getString("gender"));
-        }
-        if (col_name.contains("role")) {
-            user.setRole(rs.getString("role"));
-        }
-        if (col_name.contains("status")) {
-            user.setStatus(rs.getString("status"));
-        }
+        return value;
     }
-
-    // fetch and return the column name of result set data
-    private List<String> getColumns(ResultSet rs) throws SQLException {
-        ResultSetMetaData data = rs.getMetaData();
-        int count = data.getColumnCount();
-        List<String> col_name = new ArrayList<String>();
-        for (int col = 1; col <= count; col++) {
-            col_name.add(data.getColumnName(col));
-        }
-        if (col_name.isEmpty()) {
-            throw new SQLException("No Row Selected");
-        }
-        return col_name;
-    }
-
+    
 }
