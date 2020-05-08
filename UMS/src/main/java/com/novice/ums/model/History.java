@@ -8,6 +8,7 @@ package com.novice.ums.model;
 /**
  *
  * @author HP
+ * This is BEANS Class just to hold the data
  */
 public class History {
     private int history_id;
@@ -16,11 +17,18 @@ public class History {
     private String type;
     private String remark;
     private String ip_address;
+    
+    public History(){
+        this.history_id = 0;
+        this.date_time = null;
+        this.username = null;
+        this.type = null;
+        this.remark = null;
+        this.ip_address = null;
+    }
 
-    public History(int history_id, String username, String date_time, String type, String remark, String ip_address) {
-        this.history_id = history_id;
+    public History(String username, String type, String remark, String ip_address) {
         this.username = username;
-        this.date_time = date_time;
         this.type = type;
         this.remark = remark;
         this.ip_address = ip_address;

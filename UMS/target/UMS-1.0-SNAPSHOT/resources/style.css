@@ -8,7 +8,7 @@
 
 /* navbar */
 .b_navinputheight {
-    height: 30px;
+    height: 30px !important;
 }
 .b_modified_navlink {
     padding: 0.25rem 0.35rem !important;
@@ -40,5 +40,33 @@
         width: 100%;
     }
 }
+/* navbar ends*/
 
-/* navbar */
+/*profile*/
+
+#b_profil_container img:hover {
+    opacity: 0.5;
+    z-index: 501;
+}
+
+#b_profilepic:hover + i{
+    display: block;
+    z-index: 500;
+}
+
+#b_addicon{
+    display: none;
+    position: absolute;
+    top:29%;
+    right:43%;
+    font-size:50px;
+}
+#b_uploadprofilepic{
+    display:none;
+}
+
+#b_addicon:hover ,#b_profilepic:hover{
+    cursor: pointer;    
+}
+
+/*profile ends*/
