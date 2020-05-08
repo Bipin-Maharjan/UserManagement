@@ -3,4 +3,4 @@
 </html>
 
 <!--add global java script link here-->
-<Script src="${pageContext.request.contextPath}/resources/jscript.js"/>
+<Script src="${pageContext.request.contextPath}/resources/jscript.js"></script>
