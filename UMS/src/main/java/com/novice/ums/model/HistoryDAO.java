@@ -23,7 +23,7 @@ public class HistoryDAO {
             con = Database.getDatabase().getConnection();
             String sql = "Insert into history (username,type,remark,ip_address) values(?,?,?,?);";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, username);
+            st.setString(1, username.toLowerCase());
             st.setString(2, type);
             st.setString(3, remark);
             st.setString(4, ip_address);

@@ -27,7 +27,7 @@ public class UserDAO {
         try {
             con = Database.getDatabase().getConnection();
             PreparedStatement st = con.prepareStatement("Select * from user where username = ?");
-            st.setString(1, username);
+            st.setString(1, username.toLowerCase());
             ResultSet rs = st.executeQuery();
             rs.next();
             
@@ -130,10 +130,10 @@ public class UserDAO {
                 switch(change){
                     case "username":
                         if(updateUser.getUsername() == null){
-                            st.setString(changes.indexOf(change)+1, username);
+                            st.setString(changes.indexOf(change)+1, username.toLowerCase());
                         }
                         else{
-                            st.setString(changes.indexOf(change)+1, updateUser.getUsername());
+                            st.setString(changes.indexOf(change)+1, updateUser.getUsername().toLowerCase());
                         }
                         break;
                     case "first_name":
@@ -214,7 +214,7 @@ public class UserDAO {
         try {
             con = Database.getDatabase().getConnection();
             PreparedStatement st = con.prepareStatement("Delete from user where username = ?");
-            st.setString(1, username);
+            st.setString(1, username.toLowerCase());
             st.execute();
             return true;
         } catch (SQLException ex) {
@@ -236,7 +236,7 @@ public class UserDAO {
         try {
             con = Database.getDatabase().getConnection();
             PreparedStatement st = con.prepareStatement("select * from user where username = ? ;");
-            st.setString(1,username);
+            st.setString(1,username.toLowerCase());
             ResultSet rs = st.executeQuery();
             rs.last();
             value = rs.getRow() == 0? true:false;
