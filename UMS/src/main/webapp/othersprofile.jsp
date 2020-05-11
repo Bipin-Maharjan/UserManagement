@@ -38,8 +38,8 @@
       <div class="row justify-content-center">
         <div class="col-lg-4 col-12 mb-2 text-center">
           <div>
-            <% if(user.getProfile_picture() != null){ %>
-            <img src="${pageContext.request.contextPath}/resources/profile/<%= user.getProfile_picture()%>" alt="" class="image-fluid" style="width:300px;" />
+            <% if(otherUser.getProfile_picture() != null){ %>
+            <img src="${pageContext.request.contextPath}/resources/profile/<%= otherUser.getProfile_picture()%>" alt="" class="image-fluid" style="width:300px;" />
             <%} else {%>
             <img src="${pageContext.request.contextPath}/resources/profile/noimage.jpg" alt="" class="image-fluid" style="width:300px;" />
             <%}%>
