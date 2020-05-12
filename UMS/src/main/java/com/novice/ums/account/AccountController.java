@@ -48,6 +48,15 @@ public class AccountController extends HttpServlet {
                     case "register":
                         viewPage(request, response, "/register.jsp");
                         break;
+                    case "forgetpassword":
+                        viewPage(request,response,"/forgetPasswordUsername.jsp");
+                        break;
+                    case "verrifyquestions":
+                        viewPage(request,response,"/forgetPasswordQuestions.jsp");
+                        break;
+                    case "setnewpassword":
+                        viewPage(request,response,"/forgetPasswordNewpassword.jsp");
+                        break;
                     default:
                         response.sendError(404, "The page you are trying get is not Found.");
                 }
@@ -69,6 +78,15 @@ public class AccountController extends HttpServlet {
                         break;
                     case "register":
                         accountRegister(request, response);
+                        break;
+                    case "checkusername":
+                        forgetPasswordUsername(request,response);
+                        break;
+                    case "checkquestions":
+                        forgetPasswordQuestion(request,response);
+                        break;
+                    case "setnewpassword":
+                        forgetPasswordNewpass(request,response);
                         break;
                 }
                 break;
@@ -254,9 +272,110 @@ public class AccountController extends HttpServlet {
 
     }
 
+    private void forgetPasswordUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username;
+        UserDAO dao;
+        User user;
+        
+        username = request.getParameter("username");
+        dao = new UserDAO();
+        
+        if(!dao.isUsernameAvailable(username)){
+            user = dao.getUser(username);
+            if (user == null) {
+                response.sendError(500, "Databse Error while verrifying user");
+                return;
+            }
+            request.getSession().setAttribute("recoverUser", user);
+            response.sendRedirect(request.getContextPath()+"/account/verrifyquestions");
+        }
+        else{
+            this.errors.add("User is not register.");
+            request.setAttribute("errors", this.errors);
+            response.sendRedirect(request.getContextPath()+"/account/forgetpassword");
+        }
+    }
+
+    private void forgetPasswordQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String answer1, answer2,username;
+        User user;
+        answer1 = request.getParameter("answer1");
+        answer2 = request.getParameter("answer2");
+        username = request.getParameter("username");
+        
+        if(username != null){
+            user = new UserDAO().getUser(username);
+            if (user == null) {
+                response.sendError(500, "Databse Error while verrifying answers");
+                return;
+            }
+            request.getSession().setAttribute("recoverUser", user);
+        }
+        else{
+            this.errors.add("Invalid forget password request.");
+            request.setAttribute("errors", this.errors);
+            response.sendRedirect(request.getContextPath()+"/account/login");
+            return;
+        }
+
+        if(user.getAnswer1().trim().equalsIgnoreCase(answer1) && user.getAnswer2().trim().equalsIgnoreCase(answer2)){
+            response.sendRedirect(request.getContextPath()+"/account/setnewpassword");
+        }
+        else{
+            this.errors.add("Incorrect answer to the questions.");
+            request.setAttribute("errors", this.errors);
+            response.sendRedirect(request.getContextPath()+"/account/verrifyquestions");
+        }
+ 
+    }
+
+    private void forgetPasswordNewpass(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String password, confirmPassword,username;
+        UserDAO dao;
+        User user;
+        password = request.getParameter("password");
+        confirmPassword = request.getParameter("confpassword");
+        username = request.getParameter("username");
+        
+        dao = new UserDAO();
+        user = dao.getUser(username);
+        if (user == null) {
+            response.sendError(500, "Databse Error while Changing password");
+            return;
+        }
+        
+        if(password.equals(confirmPassword) && !password.trim().equals("")){
+            if(password.length() >=8){
+                password = Helper.hashPassword(password);
+                User updateUser = new User();
+                updateUser.setPassword(password);
+                updateUser = dao.updateUser(updateUser, user.getUsername());
+                if(updateUser == null){
+                    response.sendError(500, "Databse Error while Changing password");
+                    return;
+                }
+                new HistoryDAO().keepLog(user.getUsername(), "Password changed", "Password changed via forget password", request.getRemoteAddr());
+                response.sendRedirect(request.getContextPath()+"/account/login");
+            }
+            else{
+                this.errors.add("Password length is less than 8.");
+                request.getSession().setAttribute("recoverUser", user);
+                request.setAttribute("errors", this.errors);
+                response.sendRedirect(request.getContextPath()+"/account/setnewpassword");
+            }
+        }
+        else{
+            this.errors.add("Password and Confirm password did not matched.");
+            this.errors.add("Please try again.");
+            request.getSession().setAttribute("recoverUser", user);
+            request.setAttribute("errors", this.errors);
+            response.sendRedirect(request.getContextPath()+"/account/setnewpassword");
+        }
+    }
+    
     @Override
     public String getServletInfo() {
         return "Account Controller";
     }
-
+    
 }

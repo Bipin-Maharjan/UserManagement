@@ -332,7 +332,7 @@ public class ProfileController extends HttpServlet {
                         return;
                     }
                     //keeping log on users account 
-                    new HistoryDAO().keepLog(updateUser.getUsername(), "change password","Password changed", request.getRemoteAddr());
+                    new HistoryDAO().keepLog(updateUser.getUsername(), "Password changed","Password changed", request.getRemoteAddr());
                 }
                 else{
                     list.add("Current password did not matched.");

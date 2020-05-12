@@ -62,7 +62,7 @@
             </div>
           </div>
           <div class="row form-group justify-content-center">
-            <a href="#" class="d-block">Forgot Password?</a>
+            <a href="<%= request.getContextPath()+"/account/forgetpassword" %>" class="d-block">Forgot Password?</a>
           </div>
           <div class="row form-group justify-content-center mt-2">
             <button type="submit" class="btn btn-info px-5">Login</button>
