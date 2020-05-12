@@ -20,13 +20,13 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author HP
- * This filter is for checking if user is logged in not to access the further page
  */
-@WebFilter(urlPatterns = {"/profile/*"})
-public class LoginRequireFilter implements Filter{
+@WebFilter(filterName = "AccountsFilter", urlPatterns = {"/account/*"})
+public class AccountsFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -36,14 +36,21 @@ public class LoginRequireFilter implements Filter{
         HttpSession session = req.getSession(); 
         
         if(session.getAttribute("user") == null){
-            resp.sendRedirect(req.getContextPath()+"/account/login");
+            chain.doFilter(request, response);
         }
         else{
-            chain.doFilter(request, response);
+            String[] uri = req.getRequestURI().split("/");
+            if(!uri[uri.length-1].equals("logout")){
+                resp.sendRedirect(req.getContextPath()+"/profile");
+            }
+            else{
+                chain.doFilter(request, response);
+            }
         }
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
     
 }

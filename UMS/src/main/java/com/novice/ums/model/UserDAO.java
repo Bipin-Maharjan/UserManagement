@@ -30,17 +30,16 @@ public class UserDAO {
             st.setString(1, username.toLowerCase());
             ResultSet rs = st.executeQuery();
             rs.next();
-            
-            user = new User(rs.getString("username"),rs.getString("password"),rs.getString("first_name"),rs.getString("last_name"),
-            rs.getString("role"),rs.getString("email"),rs.getString("phone_number"),rs.getString("date_of_birth"),rs.getString("gender")
-            ,rs.getString("question1"),rs.getString("answer1"),rs.getString("question2"),rs.getString("answer2"),rs.getString("profile_picture"),
-                    rs.getString("bio"),rs.getString("status"));
-            
+
+            user = new User(rs.getString("username"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"),
+                    rs.getString("role"), rs.getString("email"), rs.getString("phone_number"), rs.getString("date_of_birth"), rs.getString("gender"),
+                     rs.getString("question1"), rs.getString("answer1"), rs.getString("question2"), rs.getString("answer2"), rs.getString("profile_picture"),
+                    rs.getString("bio"), rs.getString("status"));
+
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             user = null;
-        }
-        finally{
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -58,7 +57,7 @@ public class UserDAO {
             con = Database.getDatabase().getConnection();
             String sql = "update user set username = ?";
             changes.add("username");
-                
+
             if (updateUser.getFirst_name() != null) {
                 sql = sql + ", first_name = ?";
                 changes.add("first_name");
@@ -124,82 +123,79 @@ public class UserDAO {
             changes.add("current_username");
 
             PreparedStatement st = con.prepareStatement(sql);
-            
-            for(String change : changes){
-                
-                switch(change){
+
+            for (String change : changes) {
+
+                switch (change) {
                     case "username":
-                        if(updateUser.getUsername() == null){
-                            st.setString(changes.indexOf(change)+1, username.toLowerCase());
-                        }
-                        else{
-                            st.setString(changes.indexOf(change)+1, updateUser.getUsername().toLowerCase());
+                        if (updateUser.getUsername() == null) {
+                            st.setString(changes.indexOf(change) + 1, username.toLowerCase());
+                        } else {
+                            st.setString(changes.indexOf(change) + 1, updateUser.getUsername().toLowerCase());
                         }
                         break;
                     case "first_name":
-                        st.setString(changes.indexOf(change)+1, updateUser.getFirst_name());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getFirst_name());
                         break;
                     case "last_name":
-                        st.setString(changes.indexOf(change)+1, updateUser.getLast_name());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getLast_name());
                         break;
                     case "question1":
-                        st.setString(changes.indexOf(change)+1, updateUser.getQuestion1());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getQuestion1());
                         break;
                     case "question2":
-                        st.setString(changes.indexOf(change)+1, updateUser.getQuestion2());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getQuestion2());
                         break;
                     case "answer1":
-                        st.setString(changes.indexOf(change)+1, updateUser.getAnswer1());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getAnswer1());
                         break;
                     case "answer2":
-                        st.setString(changes.indexOf(change)+1, updateUser.getAnswer2());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getAnswer2());
                         break;
                     case "email":
-                        st.setString(changes.indexOf(change)+1, updateUser.getEmail());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getEmail());
                         break;
                     case "bio":
-                        st.setString(changes.indexOf(change)+1, updateUser.getBio());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getBio());
                         break;
                     case "date_of_birth":
-                        st.setString(changes.indexOf(change)+1, updateUser.getDate_of_birth());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getDate_of_birth());
                         break;
                     case "profile_picture":
-                        st.setString(changes.indexOf(change)+1, updateUser.getProfile_picture());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getProfile_picture());
                         break;
                     case "phone_number":
-                        st.setString(changes.indexOf(change)+1, updateUser.getPhone_number());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getPhone_number());
                         break;
                     case "password":
-                        st.setString(changes.indexOf(change)+1, updateUser.getPassword());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getPassword());
                         break;
                     case "gender":
-                        st.setString(changes.indexOf(change)+1, updateUser.getGender());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getGender());
                         break;
                     case "role":
-                        st.setString(changes.indexOf(change)+1, updateUser.getRole());
+                        st.setString(changes.indexOf(change) + 1, updateUser.getRole());
                         break;
                     case "status":
-                        st.setString(changes.indexOf(change)+1, updateUser.getStatus());
-                        break;  
+                        st.setString(changes.indexOf(change) + 1, updateUser.getStatus());
+                        break;
                     case "current_username":
-                        st.setString(changes.indexOf(change)+1, username);
-                        break;  
-                }   
+                        st.setString(changes.indexOf(change) + 1, username);
+                        break;
+                }
             }
-            
+
             st.executeUpdate();
-            if(updateUser.getUsername() == null){
+            if (updateUser.getUsername() == null) {
                 updateUser = getUser(username);
-            }
-            else{
+            } else {
                 updateUser = getUser(updateUser.getUsername());
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             updateUser = null;
-        }
-        finally{
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -208,8 +204,8 @@ public class UserDAO {
         }
         return updateUser;
     }
-    
-    public boolean deleteUser(String username){
+
+    public boolean deleteUser(String username) {
         Connection con = null;
         try {
             con = Database.getDatabase().getConnection();
@@ -220,8 +216,7 @@ public class UserDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }
-        finally{
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -229,22 +224,21 @@ public class UserDAO {
             }
         }
     }
-    
-    public boolean isUsernameAvailable(String username){
-        Connection con=null;
+
+    public boolean isUsernameAvailable(String username) {
+        Connection con = null;
         boolean value = false;
         try {
             con = Database.getDatabase().getConnection();
             PreparedStatement st = con.prepareStatement("select * from user where username = ? ;");
-            st.setString(1,username.toLowerCase());
+            st.setString(1, username.toLowerCase());
             ResultSet rs = st.executeQuery();
             rs.last();
-            value = rs.getRow() == 0? true:false;
+            value = rs.getRow() == 0 ? true : false;
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             value = false;
-        }
-        finally{
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -253,5 +247,41 @@ public class UserDAO {
         }
         return value;
     }
-    
+
+    public boolean createUser(User user) {
+        Connection con = null;
+        try {
+            con = Database.getDatabase().getConnection();
+            String sql = "INSERT INTO user(username, password, first_name, last_name, role, "
+                    + "email, phone_number, date_of_birth, gender, question1, answer1, "
+                    + "question2, answer2) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, user.getUsername());
+            st.setString(2, user.getPassword());
+            st.setString(3, user.getFirst_name());
+            st.setString(4, user.getLast_name());
+            st.setString(5, user.getRole());
+            st.setString(6, user.getEmail());
+            st.setString(7, user.getPhone_number());
+            st.setString(8, user.getDate_of_birth());
+            st.setString(9, user.getGender());
+            st.setString(10, user.getQuestion1());
+            st.setString(11, user.getAnswer1());
+            st.setString(12, user.getQuestion2());
+            st.setString(13, user.getAnswer2());
+            st.execute();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
 }

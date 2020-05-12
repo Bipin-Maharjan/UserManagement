@@ -7,15 +7,15 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand navbar-toggler b_fix" href="#">
-        <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
+      <a class="navbar-brand navbar-toggler b_fix" href="<%= request.getContextPath() %>">
+        <img src="${pageContext.request.contextPath}/resources/logo/um-logo.png" width="30" height="30" class="d-inline-block align-top" alt="" />
         <span>User Management System</span>
       </a>
       <div class="collapse navbar-collapse flex-column" id="navbar">
         <ul class="navbar-nav nav w-100 align-items-center">
           <li class="nav-item">
-            <a class="navbar-brand d-none d-lg-inline-block" href="#">
-              <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
+            <a class="navbar-brand d-none d-lg-inline-block" href="<%= request.getContextPath() %>">
+              <img src="${pageContext.request.contextPath}/resources/logo/um-logo.png" width="30" height="30" class="d-inline-block align-top" alt="" />
               User Management System
             </a>
           </li>
@@ -38,7 +38,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="left: unset; right: 0;">
               <a class="dropdown-item" href="#">History</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Logout</a>
+              <a class="dropdown-item" href="<%= request.getContextPath()+"/account/logout" %>">Logout</a>
             </div>
           </li>
         </ul>
@@ -47,7 +47,7 @@
             <a href="#" class="nav-link active b_modified_navlink">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link b_modified_navlink">Profile</a>
+            <a href="<%= request.getContextPath()+"/profile" %>" class="nav-link b_modified_navlink">Profile</a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link b_modified_navlink">Report</a>

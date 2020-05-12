@@ -6,15 +6,15 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand navbar-toggler b_fix" href="#">
-        <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
+      <a class="navbar-brand navbar-toggler b_fix" href="<%= request.getContextPath() %>">
+        <img src="${pageContext.request.contextPath}/resources/logo/um-logo.png" width="30" height="30" class="d-inline-block align-top" alt="" />
         User Management System
       </a>
       <div class="collapse navbar-collapse flex-column" id="navbar">
         <ul class="navbar-nav nav w-100 align-items-center">
           <li class="nav-item">
-            <a class="navbar-brand d-none d-lg-inline-block" href="#">
-              <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
+            <a class="navbar-brand d-none d-lg-inline-block" href="<%= request.getContextPath() %>">
+              <img src="${pageContext.request.contextPath}/resources/logo/um-logo.png" width="30" height="30" class="d-inline-block align-top" alt="" />
               User Management System
             </a>
           </li>
