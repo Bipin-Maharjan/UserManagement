@@ -25,7 +25,7 @@
     </div>
     <div class="container mt-lg-3 pr-lg-5 pl-lg-2">
       <div class="b_formWidth" style="width: 50%; margin-right: auto; margin-left: auto;">
-        <form action="<%= request.getContextPath() %>/account/checkusername/" method="POST" class="py-4 pr-lg-5 px-4 border rounded shadow-lg" style="background-color: #e1e2e2;">
+        <form action="<%= request.getContextPath() %>/account/checkusername/" method="POST" class="py-4 pr-lg-5 px-4 border rounded shadow-lg" style="background-color: #c8cecd;">
           <%  for (Object error : errors) {%>
             <p class="text-center text-danger">"<%= error%>"</p>
           <%} errors.removeAll(errors); %>

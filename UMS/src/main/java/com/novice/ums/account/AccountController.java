@@ -118,12 +118,18 @@ public class AccountController extends HttpServlet {
         }
 
         User user = dao.getUser(username);
-        if (user.getPassword().equals(hashPassword)) {
-            request.getSession().setAttribute("user", user);
-            new HistoryDAO().keepLog(user.getUsername(), "Login", "Logged in", request.getRemoteAddr());
-            response.sendRedirect(request.getContextPath() + "/profile");
-        } else {
-            this.errors.add("Incorrect Username or Password");
+        if(user.getStatus().equalsIgnoreCase("active")){
+            if (user.getPassword().equals(hashPassword)) {
+                request.getSession().setAttribute("user", user);
+                new HistoryDAO().keepLog(user.getUsername(), "Login", "Logged in", request.getRemoteAddr());
+                response.sendRedirect(request.getContextPath() + "/profile");
+            } else {
+                this.errors.add("Incorrect Username or Password");
+                response.sendRedirect(request.getContextPath() + "/account/login");
+            }
+        }
+        else{
+            this.errors.add("User is blocked. Please contact the Admin.");
             response.sendRedirect(request.getContextPath() + "/account/login");
         }
     }
