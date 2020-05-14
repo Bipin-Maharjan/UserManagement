@@ -33,6 +33,14 @@ public class History {
         this.remark = remark;
         this.ip_address = ip_address;
     }
+    
+    public History(String username, String date_time, String type, String remark, String ip_address) {
+        this.username = username;
+        this.type = type;
+        this.remark = remark;
+        this.ip_address = ip_address;
+        this.date_time = date_time;
+    }
 
     public int getHistory_id() {
         return history_id;

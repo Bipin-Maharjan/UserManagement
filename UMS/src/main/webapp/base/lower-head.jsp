@@ -36,7 +36,7 @@
               <i class="fas fa-caret-down align-middle"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="left: unset; right: 0;">
-              <a class="dropdown-item" href="#">History</a>
+              <a class="dropdown-item" href="<%= request.getContextPath()+"/history" %>">History</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="<%= request.getContextPath()+"/account/logout" %>">Logout</a>
             </div>
