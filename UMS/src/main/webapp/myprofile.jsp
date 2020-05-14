@@ -41,7 +41,7 @@
           <form method="post" id="b_uploadprofile" action="profile/uploadprofilepicture" enctype="multipart/form-data">
             <input id="b_uploadprofilepic" type="file" name="profile_picture" accept="image/jpeg,image/png">
           </form>
-          <p class="h4"><%= user.getFirst_name()+" "+user.getLast_name() %></p>
+          <p class="h4"><%= user.getFirst_name().substring(0, 1).toUpperCase() + user.getFirst_name().substring(1)+" "+user.getLast_name().substring(0, 1).toUpperCase() + user.getLast_name().substring(1) %></p>
           <p class="h6">@<%= user.getUsername() %></p>
         </div>
       </div>
@@ -62,7 +62,7 @@
             <div class="p-3">
               <dl class="row">
                 <dt class="col-2 text-right">Name:</dt>
-                <dd class="col-4 text-wrap text-break"><%= user.getFirst_name()+" "+user.getLast_name() %></dd>
+                <dd class="col-4 text-wrap text-break"><%= user.getFirst_name().substring(0, 1).toUpperCase() + user.getFirst_name().substring(1)+" "+user.getLast_name().substring(0, 1).toUpperCase() + user.getLast_name().substring(1) %></dd>
 
                 <dt class="col-3 text-right">Username:</dt>
                 <dd class="col-3 text-wrap text-break"><%= user.getUsername() %></dd>
@@ -76,7 +76,7 @@
               </dl>
               <dl class="row">
                 <dt class="col-2 text-right">Gender:</dt>
-                <dd class="col-4 text-wrap text-break"><%= user.getGender() %></dd>
+                <dd class="col-4 text-wrap text-break"><%= user.getGender().substring(0, 1).toUpperCase()+user.getGender().substring(1) %></dd>
 
                 <dt class="col-3 text-right">Date of Birth:</dt>
                 <dd class="col-3 text-wrap text-break"><%= user.getDate_of_birth() %></dd>
