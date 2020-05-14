@@ -8,7 +8,6 @@ package com.novice.ums.history;
 import com.novice.ums.model.HistoryDAO;
 import com.novice.ums.model.User;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,7 +27,6 @@ public class HistoryController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String URI[] = request.getRequestURI().split("/");
-        System.out.println(Arrays.toString(URI));
 
         String username, type, search, page;
         User user = (User) request.getSession().getAttribute("user");
@@ -39,7 +37,7 @@ public class HistoryController extends HttpServlet {
                 username = request.getParameter("user");
                 type = request.getParameter("type");
                 page = request.getParameter("page");
-                System.out.println(username + " " + type + " " + page);
+
                 if (username == null && type == null) {
                     // current logged in user's history
                     if (page == null) {
@@ -145,7 +143,7 @@ public class HistoryController extends HttpServlet {
                         search = request.getParameter("hsearch");
                         type = request.getParameter("type");
                         page = request.getParameter("page");
-                        System.out.println(search + " " + type + " " + page);
+
                         if (search == null && type == null) {
                             // all history
                             if (page == null) {

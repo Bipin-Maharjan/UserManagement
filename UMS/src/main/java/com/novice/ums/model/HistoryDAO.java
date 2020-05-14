@@ -54,7 +54,6 @@ public class HistoryDAO {
             ResultSet rs = st.executeQuery();
             rs.next();
             int noOfRecords = rs.getInt("count");
-            System.out.println("al1."+noOfRecords);
             return (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
         } catch (SQLException ex) {
             Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,7 +80,6 @@ public class HistoryDAO {
             ResultSet rs = st.executeQuery();
             rs.next();
             int noOfRecords = rs.getInt("count");
-            System.out.println("al"+noOfRecords);
             return (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
         } catch (SQLException ex) {
             Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,7 +106,6 @@ public class HistoryDAO {
             ResultSet rs = st.executeQuery();
             rs.next();
             int noOfRecords = rs.getInt("count");
-            System.out.println("1."+noOfRecords);
             return (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
         } catch (SQLException ex) {
             Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,7 +133,6 @@ public class HistoryDAO {
             ResultSet rs = st.executeQuery();
             rs.next();
             int noOfRecords = rs.getInt("count");
-            System.out.println(noOfRecords);
             return (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
         } catch (SQLException ex) {
             Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -164,7 +160,6 @@ public class HistoryDAO {
             ResultSet rs = st.executeQuery();
             rs.next();
             int noOfRecords = rs.getInt("count");
-            System.out.println(noOfRecords);
             return (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
         } catch (SQLException ex) {
             Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -191,7 +186,6 @@ public class HistoryDAO {
             ResultSet rs = st.executeQuery();
             rs.next();
             int noOfRecords = rs.getInt("count");
-            System.out.println(noOfRecords);
             return (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
         } catch (SQLException ex) {
             Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
