@@ -99,7 +99,7 @@ public class HistoryController extends HttpServlet {
                         return;
                     }
                     int pageno = new HistoryDAO().getNoOfPages(username, type);
-                    List types = getColumnTypes(response, user.getUsername());
+                    List types = getColumnTypes(response, username);
                     request.getSession().setAttribute("types", types);
                     request.getSession().setAttribute("pageno", pageno);
                     request.setAttribute("username", username);
@@ -125,7 +125,7 @@ public class HistoryController extends HttpServlet {
                         return;
                     }
                     int pageno = new HistoryDAO().getNoOfPages(username);
-                    List types = getColumnTypes(response, user.getUsername());
+                    List types = getColumnTypes(response, username);
                     request.getSession().setAttribute("types", types);
                     request.getSession().setAttribute("pageno", pageno);
                     request.setAttribute("username", username);
@@ -185,7 +185,7 @@ public class HistoryController extends HttpServlet {
                             request.setAttribute("all", "true");
 
                         } else if (search != null && type == null) {
-                            // all hsitory with search
+                            // all history with search
                             if (page == null) {
                                 List histories = getSearchHistories(response, search, 1);
                                 request.getSession().setAttribute("histories", histories);
@@ -205,7 +205,7 @@ public class HistoryController extends HttpServlet {
                             request.setAttribute("all", "true");
 
                         } else if (search == null && type != null) {
-                            // all history with search
+                            // all history with type
                             if (page == null) {
                                 List histories = getAllHistories(response, type, 1);
                                 request.getSession().setAttribute("histories", histories);

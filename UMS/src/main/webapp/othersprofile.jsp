@@ -23,7 +23,7 @@
           <% if(otherUser.getStatus().equalsIgnoreCase("blocked")){ %>
           <p class="h6 font-weight-bold text-danger text-center d-md-inline-block"> User is blocked </p>
           <%}%>
-          <a class="btn btn-info py-1 d-md-inline-block float-md-right mr-2 mb-md-0 mb-2 text-white" href="#">View History</a>
+          <a class="btn btn-info py-1 d-md-inline-block float-md-right mr-2 mb-md-0 mb-2 text-white" href="<%= request.getContextPath()+"/history?user="+otherUser.getUsername() %>">View History</a>
         </div>
         <% } %>
         <div class="col-12 text-center" id="error">
