@@ -23,7 +23,7 @@
           <% if(otherUser.getStatus().equalsIgnoreCase("blocked")){ %>
           <p class="h6 font-weight-bold text-danger text-center d-md-inline-block"> User is blocked </p>
           <%}%>
-          <button class="btn btn-info py-1 d-md-inline-block float-md-right mr-2 mb-md-0 mb-2">View History</button>
+          <a class="btn btn-info py-1 d-md-inline-block float-md-right mr-2 mb-md-0 mb-2 text-white" href="#">View History</a>
         </div>
         <% } %>
         <div class="col-12 text-center" id="error">
@@ -44,7 +44,7 @@
             <img src="${pageContext.request.contextPath}/resources/profile/noimage.jpg" alt="" class="image-fluid" style="width:300px;" />
             <%}%>
           </div>
-          <p class="h4"><%= otherUser.getFirst_name()+" "+otherUser.getLast_name() %></p>
+          <p class="h4"><%= otherUser.getFirst_name().substring(0, 1).toUpperCase() + otherUser.getFirst_name().substring(1)+" "+otherUser.getLast_name().substring(0, 1).toUpperCase() + otherUser.getLast_name().substring(1) %></p>
           <p class="h6">@<%= otherUser.getUsername() %></p>
         </div>
       </div>
@@ -74,7 +74,7 @@
             <div class="p-3">
               <dl class="row">
                 <dt class="col-2 text-right">Name:</dt>
-                <dd class="col-4 text-wrap text-break"><%= otherUser.getFirst_name()+" "+otherUser.getLast_name() %></dd>
+                <dd class="col-4 text-wrap text-break"><%= otherUser.getFirst_name().substring(0, 1).toUpperCase() + otherUser.getFirst_name().substring(1)+" "+otherUser.getLast_name().substring(0, 1).toUpperCase() + otherUser.getLast_name().substring(1) %></dd>
 
                 <dt class="col-3 text-right">Username:</dt>
                 <dd class="col-3 text-wrap text-break"><%= otherUser.getUsername() %></dd>
@@ -88,7 +88,7 @@
               </dl>
               <dl class="row">
                 <dt class="col-2 text-right">Gender:</dt>
-                <dd class="col-4 text-wrap text-break"><%= otherUser.getGender() %></dd>
+                <dd class="col-4 text-wrap text-break"><%= otherUser.getGender().substring(0, 1).toUpperCase()+otherUser.getGender().substring(1) %></dd>
 
                 <dt class="col-3 text-right">Date of Birth:</dt>
                 <dd class="col-3 text-wrap text-break"><%= otherUser.getDate_of_birth() %></dd>

@@ -5,6 +5,8 @@
  */
 package com.novice.ums.filter;
 
+import com.novice.ums.model.User;
+import com.novice.ums.model.UserDAO;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

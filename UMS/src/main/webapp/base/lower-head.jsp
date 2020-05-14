@@ -27,7 +27,7 @@
           </li>
           <li class="nav-item text-right my-2 b_width_100_xs_lg dropdown" style="flex-grow: 0.7;">
             <a class="navbar-brand mr-0" style="font-size: 1rem;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="align-middle"><%= sessionUser.getUsername() %></span>
+              <span class="align-middle"><%= sessionUser.getUsername().substring(0, 1).toUpperCase()+sessionUser.getUsername().substring(1) %></span>
               <% if (sessionUser.getProfile_picture() != null) {%>
               <img src="${pageContext.request.contextPath}/resources/profile/<%= sessionUser.getProfile_picture()%>" width="30" height="30" class="d-inline-block align-top rounded-circle border border-secondary" alt="" />
               <%} else {%>
