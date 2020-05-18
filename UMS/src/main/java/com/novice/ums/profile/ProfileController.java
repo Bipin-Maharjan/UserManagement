@@ -34,6 +34,7 @@ import javax.servlet.http.Part;
 public class ProfileController extends HttpServlet {
 
     private List errors = new ArrayList();
+    private String success = "";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -104,12 +105,12 @@ public class ProfileController extends HttpServlet {
                         changeQuestions(request, response);
                         break;
                     default:
-                        this.errors.add("Invalid Request1");
+                        this.errors.add("Invalid Request");
                         response.sendRedirect(request.getContextPath() + "/profile");
                 }
                 break;
             default:
-                this.errors.add("Invalid Request2");
+                this.errors.add("Invalid Request");
                 response.sendRedirect(request.getContextPath() + "/profile");
         }
     }
@@ -178,7 +179,9 @@ public class ProfileController extends HttpServlet {
                 oldImage.delete();
             }
         }
-
+        if(this.errors.isEmpty()){
+            this.success = "Profile picture has been updated successfully";
+        }
         response.sendRedirect(request.getContextPath() + "/profile");
     }
 
@@ -298,6 +301,10 @@ public class ProfileController extends HttpServlet {
         session.setAttribute("user", updateUser);
         manageError(1,list);
         request.setAttribute("errors", this.errors);
+        if(list.isEmpty()){
+            this.success = " Details are updated successfully";
+        }
+        
         response.sendRedirect(request.getContextPath() + "/profile/editprofile");
     }
             
@@ -349,6 +356,9 @@ public class ProfileController extends HttpServlet {
         session.setAttribute("user", updateUser);
         manageError(2, list);
         request.setAttribute("errors", this.errors);
+        if(list.isEmpty()){
+            this.success = " Password changed sucessfully";
+        }
         response.sendRedirect(request.getContextPath() + "/profile/editprofile");
     }
     
@@ -438,17 +448,22 @@ public class ProfileController extends HttpServlet {
         }
         if(!isEmpty || !isEmpty2){
             //keeping log on users account 
-            new HistoryDAO().keepLog(updateUser.getUsername(), "change question","Security question changed", request.getRemoteAddr());
+            new HistoryDAO().keepLog(updateUser.getUsername(), "Question changed","Security question changed", request.getRemoteAddr());
         }
         
         session.setAttribute("user",updateUser);
         manageError(3, list);
         request.setAttribute("errors", this.errors);
+        if(list.isEmpty()){
+            this.success = " Security question updated successfully";
+        }
         response.sendRedirect(request.getContextPath() + "/profile/editprofile");
     }
     
     private void viewPage(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
         request.setAttribute("errors", this.errors);
+        request.setAttribute("success", this.success);
+        this.success = "";
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
@@ -468,7 +483,7 @@ public class ProfileController extends HttpServlet {
                     return;
                 }
                 //keeping log on admins account
-                new HistoryDAO().keepLog(loginUser.getUsername(), "block", "User blocked : " + username, request.getRemoteAddr());
+                new HistoryDAO().keepLog(loginUser.getUsername(), "User blocked", "User blocked : " + username, request.getRemoteAddr());
 
                 request.setAttribute("otherUser", otherUser);
                 response.sendRedirect(request.getContextPath() + "/profile?user=" + username);
@@ -483,7 +498,7 @@ public class ProfileController extends HttpServlet {
                 }
 
                 //keeping log on admins account
-                new HistoryDAO().keepLog(loginUser.getUsername(), "activate", "User activate : " + username, request.getRemoteAddr());
+                new HistoryDAO().keepLog(loginUser.getUsername(), "User activated", "User activate : " + username, request.getRemoteAddr());
 
                 request.setAttribute("otherUser", otherUser);
                 response.sendRedirect(request.getContextPath() + "/profile?user=" + username);
@@ -492,7 +507,7 @@ public class ProfileController extends HttpServlet {
                 boolean isDeleted = new UserDAO().deleteUser(username);
                 if (isDeleted) {
                     //keeping log on admins account
-                    new HistoryDAO().keepLog(loginUser.getUsername(), "delete", "User deleted : " + username, request.getRemoteAddr());
+                    new HistoryDAO().keepLog(loginUser.getUsername(), "User deleted", "User deleted : " + username, request.getRemoteAddr());
                     response.sendRedirect(request.getContextPath() + "/profile");
                     return;
 

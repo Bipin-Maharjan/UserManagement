@@ -9,6 +9,7 @@
 <%
     List errors = (List) request.getAttribute("errors");
     User user = (User) session.getAttribute("user");
+    String success = (String) request.getAttribute("success");
 %>
 <div class="p-3" style="background-color: rgb(128, 146, 153);">
   <div class="bg-white">
@@ -19,43 +20,55 @@
             <span class="h5">Edit User</span>
           </div>
         </div>
-        <div class="row bd">
+        <div class="row bd justify-content-center">
+          <% if (!success.isBlank()) {%>
+          <div class="col-md-8 col-12">
+            <div class="alert alert-success alert-dismissible fade show text-center auto-dismis" role="alert">
+              <%= success%>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <% } %>
+          <div class="w-100"></div>
           <div class="col-12">
             <div class="mt-1 mb-3">
               <span class="font-weight-bold">
                 <u>Personal Details</u>
               </span>
-              <% if(!errors.isEmpty()){%>
-                <% for (Object error : (List) errors.remove(0)) {%>
-                <p class="text-danger text-center">"<%= error%>"</p>
-              <%}} %>
+              <% if (!errors.isEmpty()) {%>
+              <% for (Object error : (List) errors.remove(0)) {%>
+              <p class="text-danger text-center">"<%= error%>"</p>
+              <%}
+                  }%>
             </div>
             <div>
               <form action="updatedetails" method="POST" class="pr-4 pl-2">
                 <div class="row form-group">
                   <label for="firstname" class="col-lg-2 col-12 text-lg-right align-self-end">First Name:</label>
-                  <input type="text" class="form-control col-lg-4 col-12 rounded-0" id="firstname" name="fname" placeholder="Enter First Name" value="<%= user.getFirst_name() %>"/>
+                  <input type="text" class="form-control col-lg-4 col-12 rounded-0" id="firstname" name="fname" placeholder="Enter First Name" value="<%= user.getFirst_name()%>"/>
 
                   <label for="lastname" class="col-lg-2 col-12 text-lg-right align-self-end">Last Name:</label>
-                  <input type="text" class="form-control col-lg-4 col-12 rounded-0" id="lastname" name="lname" placeholder="Enter Last Name" value="<%= user.getLast_name() %>"/>
+                  <input type="text" class="form-control col-lg-4 col-12 rounded-0" id="lastname" name="lname" placeholder="Enter Last Name" value="<%= user.getLast_name()%>"/>
                 </div>
                 <div class="row form-group">
                   <label for="email" class="col-lg-2 col-12 text-lg-right align-self-end">Email:</label>
-                  <input type="email" class="form-control col-lg-4 col-12 rounded-0" id="email" name="email" placeholder="Enter E-mail" value="<%= user.getEmail() %>"/>
+                  <input type="email" class="form-control col-lg-4 col-12 rounded-0" id="email" name="email" placeholder="Enter E-mail" value="<%= user.getEmail()%>"/>
 
                   <label for="username" class="col-lg-2 col-12 text-lg-right align-self-end">Username:</label>
-                  <input type="text" class="form-control col-lg-4 col-12 rounded-0" id="username" name="username" placeholder="Enter Username" value="<%= user.getUsername() %>"/>
+                  <input type="text" class="form-control col-lg-4 col-12 rounded-0" id="username" name="username" placeholder="Enter Username" value="<%= user.getUsername()%>"/>
                 </div>
                 <div class="row form-group">
                   <label for="contactnumber" class="col-lg-2 col-12 text-lg-right align-self-end">Contact Number:</label>
-                  <input type="text" class="form-control col-lg-4 col-12 rounded-0" id="contactnumber" name="contact" placeholder="Enter Contact Number" value="<%= user.getPhone_number() %>"/>
+                  <input type="text" class="form-control col-lg-4 col-12 rounded-0" id="contactnumber" name="contact" placeholder="Enter Contact Number" value="<%= user.getPhone_number()%>"/>
 
                   <label for="dateofbirth" class="col-lg-2 col-12 text-lg-right align-self-xl-end align-self-center">Date of Birth:</label>
-                  <input type="date" class="form-control col-lg-4 col-12 rounded-0" id="dateofbirth" name="dob" value="<%= user.getDate_of_birth() %>"/>
+                  <input type="date" class="form-control col-lg-4 col-12 rounded-0" id="dateofbirth" name="dob" value="<%= user.getDate_of_birth()%>"/>
                 </div>
                 <div class="row form-group">
                   <label for="bio" class="col-lg-2 col-12 text-lg-right align-self-center">Bio:</label>
-                  <textarea class="form-control col-lg-8 col-12 rounded-0" id="bio" rows="1" name="bio"><%= (user.getBio() == null)?"": user.getBio() %></textarea>
+                  <textarea class="form-control col-lg-8 col-12 rounded-0" id="bio" rows="1" name="bio"><%= (user.getBio() == null) ? "" : user.getBio()%></textarea>
                 </div>
                 <div class="row form-group justify-content-center">
                   <button type="submit" class="btn btn-secondary">Update Details</button>
@@ -70,10 +83,11 @@
               <span class="font-weight-bold">
                 <u>Change Password</u>
               </span>
-              <% if(!errors.isEmpty()){%>
+              <% if (!errors.isEmpty()) {%>
               <% for (Object error : (List) errors.remove(0)) {%>
               <p class="text-danger text-center">"<%= error%>"</p>
-              <%}} %>
+              <%}
+                  } %>
             </div>
             <div>
               <form action="changepassword" method="POST" class="pr-4 pl-2">
@@ -101,10 +115,11 @@
               <span class="font-weight-bold">
                 <u>Change Security Question</u>
               </span>
-              <% if(!errors.isEmpty()){%>
+              <% if (!errors.isEmpty()) {%>
               <% for (Object error : (List) errors.remove(0)) {%>
               <p class="text-danger text-center">"<%= error%>"</p>
-              <%}}%>
+              <%}
+                  }%>
             </div>
             <div>
               <form action="changequestion" method="POST" class="pr-4 pl-2">

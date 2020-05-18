@@ -10,3 +10,10 @@ $('#b_profilepic, #b_addicon').click(function () {
 $("#b_uploadprofilepic").change(function(){
    $("#b_uploadprofile").submit(); 
 });
+
+//auto dismiss of alert in 7 second
+$(document).ready(function(){
+    setTimeout(function(){
+        $(".auto-dismis").alert("close");
+    }, 7000); 
+});
