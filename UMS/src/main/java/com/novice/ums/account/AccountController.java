@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSession;
 public class AccountController extends HttpServlet {
 
     List errors = new ArrayList();
+    String success = "";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -98,6 +99,8 @@ public class AccountController extends HttpServlet {
     
     private void viewPage(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
         request.setAttribute("errors", this.errors);
+        request.setAttribute("success",this.success);
+        this.success = "";
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
@@ -267,12 +270,15 @@ public class AccountController extends HttpServlet {
 
         if (!hasError) {
             if (dao.createUser(user)) {
-                new HistoryDAO().keepLog(user.getUsername(), "Register", "Registered to the system", request.getRemoteAddr());
+                new HistoryDAO().keepLog(user.getUsername(), "User Register", "Registered to the system", request.getRemoteAddr());
                 response.sendRedirect(request.getContextPath() + "/account/login");
             } else {
                 response.sendError(500, "Error While Creating a User.");
             }
         } else {
+            if(this.errors.isEmpty()){
+                this.success = "User Registered. Please login to continue.";
+            }
             response.sendRedirect(request.getContextPath() + "/account/register");
         }
 
@@ -361,6 +367,9 @@ public class AccountController extends HttpServlet {
                     return;
                 }
                 new HistoryDAO().keepLog(user.getUsername(), "Password changed", "Password changed via forget password", request.getRemoteAddr());
+                if(this.errors.isEmpty()){
+                    this.success = "Password Changed Successfully";
+                }
                 response.sendRedirect(request.getContextPath()+"/account/login");
             }
             else{

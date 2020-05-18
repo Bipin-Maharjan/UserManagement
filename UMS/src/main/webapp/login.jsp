@@ -8,6 +8,7 @@
 </script>
 <%
     List errors = (List) request.getAttribute("errors");
+    String success = (String) request.getAttribute("success");
 %>
 <div class="contaner-fluid">
   <div class="mx-3">
@@ -19,6 +20,20 @@
       <div class="w-100"></div>
     </div>
     <div class="row">
+      <% if (!success.isBlank()){ %>
+        <div class="col-12">
+          <div class="row justify-content-center">
+            <div class="col-md-8 col-12">
+              <div class="alert alert-success alert-dismissible fade show text-center auto-dismis" role="alert">
+                <%= success%>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
       <div class="col-12 text-center align-content-center">
         <span class="mb-5 mt-1 d-block font-weight-bold" style="font-size: 28px;">Login with User Management System Account</span>
       </div>
