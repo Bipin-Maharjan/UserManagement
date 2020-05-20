@@ -4,7 +4,7 @@ USE `ums`;
 
 
 CREATE TABLE `history` (
-  `histiry_id` int(11) NOT NULL,
+  `history_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `date_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` varchar(30) NOT NULL,
@@ -33,14 +33,14 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`histiry_id`),
+  ADD PRIMARY KEY (`history_id`),
   ADD KEY `username_fk` (`username`);
 
 ALTER TABLE `user`
   ADD PRIMARY KEY (`username`);
 
 ALTER TABLE `history`
-  MODIFY `histiry_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `history`
   ADD CONSTRAINT `username_fk` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
