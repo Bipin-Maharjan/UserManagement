@@ -60,9 +60,9 @@
               <div class="input-group">
                 <select class="form-control form-control-sm pl-3" name="type" id="type">
                   <option value="all">All</option>
-                 <% for(String type : types){ %>
-                 <option value="<%= type %>"><%= type.substring(0, 1).toUpperCase() + type.substring(1) %></option>
-                <% }%>
+                  <% for (String type : types) {%>
+                  <option value="<%= type%>"><%= type.substring(0, 1).toUpperCase() + type.substring(1)%></option>
+                  <% }%>
                 </select>
                 <i class="fas fa-filter" style="font-size: 10px; position: absolute; top: 11px; left: 7px; z-index: 100;"> </i>
               </div>
@@ -72,11 +72,10 @@
                 $(document).ready(function () {
                     $("#type").change(function () {
                         option = $("#type option:selected")[0];
-                        if (option.value === "all"){
-                            $("#type").prop("disabled",true);
+                        if (option.value === "all") {
+                            $("#type").prop("disabled", true);
                             $("#historyfilter").submit();
-                        }
-                        else{
+                        } else {
                             $("#historyfilter").submit();
                         }
                     });
@@ -95,13 +94,13 @@
               </tr>
             </thead>
             <tbody>
-              <% for(int count=0; count<histories.size();count++){%>
-              <% History history = histories.get(count); %>
+              <% for (int count = 0; count < histories.size(); count++) {%>
+              <% History history = histories.get(count);%>
               <tr>
-                <th scope="row"><%= count+1 %></th>
-                <td><a href="<%= request.getContextPath()+"/profile?user="+history.getUsername() %>"><%= history.getUsername() %></a></td>
-                <td><%= history.getDate_time() %></td>
-                <td><%= history.getRemark().trim() %></td>
+                <th scope="row"><%= count + 1%></th>
+                <td><a href="<%= request.getContextPath() + "/profile?user=" + history.getUsername()%>"><%= history.getUsername()%></a></td>
+                <td><%= history.getDate_time()%></td>
+                <td><%= history.getRemark().trim()%></td>
               </tr>
               <%} %>
             </tbody>
@@ -109,15 +108,15 @@
         </div>
         <div class="row justify-content-center">
           <nav aria-label="Page navigation">
-            <ul class="pagination mb-0" id="pagination">
+            <ul class="pagination mb-0" id="start-pagination">
               <li class="page-item">
                 <a class="page-link" href="#" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
-              <% for(int count = 0; count<pageno; count++){ %>
-              <li class="page-item"><a class="page-link" href="#"><%= count+1 %></a></li>
-              <% } %>
+              <% for (int count = 0; count < pageno; count++) {%>
+              <li class="page-item"><a class="page-link" href="#"><%= count + 1%></a></li>
+                <% }%>
               <li class="page-item">
                 <a class="page-link" href="#" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
@@ -126,14 +125,14 @@
             </ul>
           </nav>
           <script>
-              activeli = $("#pagination li")[<%= request.getParameter("page") != null ? request.getParameter("page") : 1%>]
+              var activeli = $("#start-pagination li")[<%= request.getParameter("page") != null ? request.getParameter("page") : 1%>];
               $(activeli).addClass("active");
-              
+
               $(document).ready(function () {
-                  $("#pagination li").click(function (event) {
+                  $("#start-pagination li").click(function (event) {
                       event.preventDefault();
-                      var pageno = $(this).text();
-                      var url = new URL(window.location.href);
+                      var pageno = $(this).text(); //taking clicked tag value
+                      var url = new URL(window.location.href); // converting url into url object
                       if (pageno.trim() === "«") {
                           pageno = getActivetText();
                           if (pageno < 1) {
@@ -146,19 +145,19 @@
                           }
                       } else if (pageno.trim() === "»") {
                           pageno = getActivetText();
-                          if ($("#pagination li").length - 2 > pageno) {
+                          if ($("#start-pagination li").length - 2 > pageno) {
                               pageno += 1;
-                          } else if ($("#pagination li").length - 2 == pageno) {
+                          } else if ($("#start-pagination li").length - 2 == pageno) {
                               return
-                          } else if ($("#pagination li").length - 2 < pageno) {
-                              pageno = $("#pagination li").length - 2;
+                          } else if ($("#start-pagination li").length - 2 < pageno) {
+                              pageno = $("#start-pagination li").length - 2;
                           }
                       }
 
                       if (url.search === "") {
                           url.search = "page=" + pageno;
                       } else {
-                          let match = url.search.match(/((\?|\&)page=[0-9]+)#?$/gm);
+                          let match = url.search.match(/((\?|\&)page=[0-9]+)#?$/gm); //checking if  page number is already there with regex.
                           if (match != null) {
                               url.search = url.search.replace(match[0], "");
                           }
@@ -169,20 +168,20 @@
                           }
                       }
                       changeActiveClass(pageno);
-                      window.location.href = url.href;
+                      window.location.href = url.href; // send request to server with modified url.
                   });
               });
               function changeActiveClass(pageno) {
 
-                  for (li of $("#pagination li")) {
+                  for (li of $("#start-pagination li")) {
                       if ($(li).text() == pageno) {
-                          $("#pagination li").removeClass("active");
+                          $("#start-pagination li").removeClass("active");
                           $(li).addClass("active");
                       }
                   }
               }
               function getActivetText() {
-                  for (li of $("#pagination li")) {
+                  for (li of $("#start-pagination li")) {
                       if ($(li).hasClass("active")) {
                           return parseInt($(li).text());
                       }
