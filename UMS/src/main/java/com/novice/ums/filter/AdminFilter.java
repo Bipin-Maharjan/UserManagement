@@ -5,6 +5,7 @@
  */
 package com.novice.ums.filter;
 
+import com.novice.ums.model.User;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -20,11 +21,10 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author HP
- * This filter is for checking if user is logged in not to access the further page
  */
-@WebFilter(urlPatterns = {"/profile/*","/history/*"})
-public class LoginRequireFilter implements Filter{
-
+@WebFilter(filterName = "AdminFilter", urlPatterns = {"/report/*"})
+public class AdminFilter implements Filter {
+    
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
@@ -39,7 +39,13 @@ public class LoginRequireFilter implements Filter{
             resp.sendRedirect(req.getContextPath()+"/account/login");
         }
         else{
-            chain.doFilter(request, response);
+            User user =(User) session.getAttribute("user");
+            if(user.getRole().equalsIgnoreCase("admin")){
+                chain.doFilter(request, response);
+            }
+            else{
+               resp.sendRedirect(req.getContextPath()+"/profile"); 
+            }
         }
     }
 

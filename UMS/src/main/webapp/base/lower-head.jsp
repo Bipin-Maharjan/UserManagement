@@ -49,9 +49,11 @@
           <li class="nav-item">
             <a href="<%= request.getContextPath()+"/profile" %>" class="nav-link b_modified_navlink">Profile</a>
           </li>
+          <% if(sessionUser.getRole().equals("admin")){ %>
           <li class="nav-item">
-            <a href="#" class="nav-link b_modified_navlink">Report</a>
+            <a href="<%= request.getContextPath()+"/report" %>" class="nav-link b_modified_navlink">Report</a>
           </li>
+          <%}%>
         </ul>
       </div>
     </nav>

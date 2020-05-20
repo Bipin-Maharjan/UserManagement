@@ -284,4 +284,71 @@ public class UserDAO {
         }
 
     }
+    
+    public int getPagesNo(String role){
+        Connection con = null;
+        String sql;
+        int recordsPerPage = 15;
+        try {
+            con = Database.getDatabase().getConnection();
+            sql = "Select count(*) as count from user where role = ? ;";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, role);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int noOfRecords = rs.getInt("count");
+            return (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+        } catch (SQLException ex) {
+            Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public List fetchUser(int page,String role, String sort){
+        String sql;
+        Connection con=null;
+        int recordsPerPage = 15;
+        int limit = recordsPerPage * page;
+        int skip = recordsPerPage * (page-1);
+        
+        try {
+            con = Database.getDatabase().getConnection();
+            sql = "Select * from user where role = ? order by first_name "+sort+" limit ?,?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, role);
+            st.setInt(2, skip);
+            st.setInt(3, limit);
+            ResultSet rs = st.executeQuery();
+            return convertRSToUser(rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private List convertRSToUser(ResultSet rs) throws SQLException{
+        List histories = new ArrayList();
+        while(rs.next()){
+            histories.add(new User(rs.getString("username"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"),
+                    rs.getString("role"), rs.getString("email"), rs.getString("phone_number"), rs.getString("date_of_birth"), rs.getString("gender"),
+                     rs.getString("question1"), rs.getString("answer1"), rs.getString("question2"), rs.getString("answer2"), rs.getString("profile_picture"),
+                    rs.getString("bio"), rs.getString("status")));
+        }
+        return histories;
+    }    
+    
 }
