@@ -20,8 +20,8 @@
             </a>
           </li>
           <li class="nav-item flex-grow-1 my-2">
-            <form class="form-inline justify-content-center">
-              <input class="form-control mr-sm-2 b_navinputheight" type="search" placeholder="Search" aria-label="Search" />
+            <form class="form-inline justify-content-center" action="<%= request.getContextPath() %>/search" method="GET">
+              <input class="form-control mr-sm-2 b_navinputheight" name="search" type="search" placeholder="Search" aria-label="Search" value="<%= request.getParameter("search")!=null?request.getParameter("search"):"" %>" />
               <button class="btn btn-outline-success my-2 my-sm-0 b_navinputheight" style="padding: unset; padding: 0px 8px;" type="submit">Search</button>
             </form>
           </li>
