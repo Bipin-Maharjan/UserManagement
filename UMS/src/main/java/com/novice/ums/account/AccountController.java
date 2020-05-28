@@ -92,8 +92,8 @@ public class AccountController extends HttpServlet {
                 }
                 break;
             default :
-                this.errors.add("Invalid Request2");
-                response.sendRedirect(request.getContextPath() + "account/login");
+                this.errors.add("Invalid Request");
+                response.sendRedirect(request.getContextPath() + "/account/login");
         }
     }
     
@@ -271,14 +271,12 @@ public class AccountController extends HttpServlet {
         if (!hasError) {
             if (dao.createUser(user)) {
                 new HistoryDAO().keepLog(user.getUsername(), "User Register", "Registered to the system", request.getRemoteAddr());
+                this.success = "User Registered. Please login to continue.";
                 response.sendRedirect(request.getContextPath() + "/account/login");
             } else {
                 response.sendError(500, "Error While Creating a User.");
             }
         } else {
-            if(this.errors.isEmpty()){
-                this.success = "User Registered. Please login to continue.";
-            }
             response.sendRedirect(request.getContextPath() + "/account/register");
         }
 
