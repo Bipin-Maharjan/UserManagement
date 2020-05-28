@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author HP
  */
-@WebFilter(filterName = "AdminFilter", urlPatterns = {"/report/*"})
+@WebFilter(filterName = "AdminFilter", urlPatterns = {"/report/*","/adduser/*"})
 public class AdminFilter implements Filter {
     
     @Override
