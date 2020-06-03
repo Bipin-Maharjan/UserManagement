@@ -340,15 +340,117 @@ public class UserDAO {
         }
     }
     
+    /**
+     * 
+     * @param search is a search keyword.
+     * @param filter is Nullable
+     * @param page starts from 1.
+     * @return List searchedUsers
+     */
+    public List searchUser(String search, String role, int page){
+        String sql;
+        Connection con=null;
+        PreparedStatement st;
+        int recordsPerPage = 15;
+        int limit = recordsPerPage * page;
+        int skip = recordsPerPage * (page-1);
+        
+        try {
+            con = Database.getDatabase().getConnection();
+            if(role == null){
+                sql = "select * from user where username like ? or first_name like ?"
+                        + " or last_name like ? or phone_number like ? limit ?,? ;";
+                st = con.prepareStatement(sql);
+                st.setString(1, search+"%");
+                st.setString(2, search+"%");
+                st.setString(3, search+"%");
+                st.setString(4, search);
+                st.setInt(5, skip);
+                st.setInt(6, limit);
+            }
+            else{
+                sql = "select * from user where ( username like ? or first_name like ?"
+                        + " or last_name like ? or phone_number like ? ) and role = ? limit ?,? ;";
+                st = con.prepareStatement(sql);
+                st.setString(1, search+"%");
+                st.setString(2, search+"%");
+                st.setString(3, search+"%");
+                st.setString(4, search);
+                st.setString(5, role);
+                st.setInt(6, skip);
+                st.setInt(7, limit);
+            }
+            
+            ResultSet rs = st.executeQuery();
+            return convertRSToUser(rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public int totalSearchPages(String search,String role){
+        String sql;
+        Connection con=null;
+        PreparedStatement st;
+        int recordsPerPage = 15;
+        
+        try {
+            con = Database.getDatabase().getConnection();
+            if(role == null){
+                sql = "select count(*) as count from user where username like ? or first_name like ?"
+                        + " or last_name like ? or phone_number like ?;";
+                st = con.prepareStatement(sql);
+                st.setString(1, search+"%");
+                st.setString(2, search+"%");
+                st.setString(3, search+"%");
+                st.setString(4, search);
+            }
+            else{
+                sql = "select count(*) as count from user where username like ? or first_name like ?"
+                        + " or last_name like ? or phone_number like ? and role = ?;";
+                st = con.prepareStatement(sql);
+                st.setString(1, search+"%");
+                st.setString(2, search+"%");
+                st.setString(3, search+"%");
+                st.setString(4, search);
+                st.setString(5, role);
+            }
+            
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int noOfRecords = rs.getInt("count");
+            return (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     private List convertRSToUser(ResultSet rs) throws SQLException{
-        List histories = new ArrayList();
+        List users = new ArrayList();
         while(rs.next()){
-            histories.add(new User(rs.getString("username"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"),
+            users.add(new User(rs.getString("username"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"),
                     rs.getString("role"), rs.getString("email"), rs.getString("phone_number"), rs.getString("date_of_birth"), rs.getString("gender"),
                      rs.getString("question1"), rs.getString("answer1"), rs.getString("question2"), rs.getString("answer2"), rs.getString("profile_picture"),
                     rs.getString("bio"), rs.getString("status")));
         }
-        return histories;
-    }    
+        return users;
+    }
     
 }

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  * @author HP
  * This filter is for checking if user is logged in not to access the further page
  */
-@WebFilter(urlPatterns = {"/profile/*","/history/*"})
+@WebFilter(urlPatterns = {"/profile/*","/history/*","/search"})
 public class LoginRequireFilter implements Filter{
 
     @Override
