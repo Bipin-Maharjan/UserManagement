@@ -44,7 +44,7 @@
         </ul>
         <ul class="navbar-nav nav w-100 pl-lg-5" style="font-size: 14px;">
           <li class="nav-item">
-            <a href="#" class="nav-link active b_modified_navlink">Dashboard</a>
+            <a href="<%= request.getContextPath()+"/dashboard" %>" class="nav-link active b_modified_navlink">Dashboard</a>
           </li>
           <li class="nav-item">
             <a href="<%= request.getContextPath()+"/profile" %>" class="nav-link b_modified_navlink">Profile</a>

@@ -88,3 +88,10 @@
   }
 }
 /* login end */
+
+/* dashboard */
+.card-columns {
+    column-count: 3;
+  }
+ 
+
