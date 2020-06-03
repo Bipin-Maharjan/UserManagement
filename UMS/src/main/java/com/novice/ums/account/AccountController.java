@@ -97,6 +97,15 @@ public class AccountController extends HttpServlet {
         }
     }
     
+    /**
+     * Function for forwarding dispatcher request for another page.
+     * 
+     * @param request Request variable
+     * @param response Response Variable
+     * @param page JSP Page name to redirect
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void viewPage(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
         request.setAttribute("errors", this.errors);
         request.setAttribute("success",this.success);
@@ -104,39 +113,42 @@ public class AccountController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
-
+    
+    /**
+     * Function to check the login credentials with database credentials and login the user.
+     * 
+     * @param request parameter: username, password
+     * @param response profile.jsp
+     * @throws IOException 
+     */
     private void accountLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String username, password, hashPassword;
+        String username, password,result;
         
         username = request.getParameter("username").trim();
         password = request.getParameter("password").trim();
-        hashPassword = Helper.hashPassword(password);
         
-        UserDAO dao = new UserDAO();
-        if (dao.isUsernameAvailable(username)) {
-            this.errors.add("User is not registerd");
-            response.sendRedirect(request.getContextPath() + "/account/login");
-            return;
-        }
-
-        User user = dao.getUser(username);
-        if(user.getStatus().equalsIgnoreCase("active")){
-            if (user.getPassword().equals(hashPassword)) {
-                request.getSession().setAttribute("user", user);
-                new HistoryDAO().keepLog(user.getUsername(), "Login", "Logged in", request.getRemoteAddr());
-                response.sendRedirect(request.getContextPath() + "/profile");
-            } else {
-                this.errors.add("Incorrect Username or Password");
-                response.sendRedirect(request.getContextPath() + "/account/login");
-            }
+        result = new AccountFunctions().verrifyLogin(username, password);
+        
+        if (result.equalsIgnoreCase("success")) {
+            User user = new UserDAO().getUser(username);
+            request.getSession().setAttribute("user", user);
+            new HistoryDAO().keepLog(user.getUsername(), "Login", "Logged in", request.getRemoteAddr());
+            response.sendRedirect(request.getContextPath() + "/profile");
         }
         else{
-            this.errors.add("User is blocked. Please contact the Admin.");
+            this.errors.add(result);
             response.sendRedirect(request.getContextPath() + "/account/login");
         }
     }
 
+    /**
+     * Function to make a user logout.
+     * 
+     * @param request parameter: none
+     * @param response login.jsp
+     * @throws IOException 
+     */
     private void accountLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -147,13 +159,18 @@ public class AccountController extends HttpServlet {
         }
         response.sendRedirect(request.getContextPath() + "/account/login");
     }
-
+    
+    /**
+     * Function for adding new client user with validations. 
+     * 
+     * @param request parameter: firstName, lastName, username, email, password, confirmPassword, phone_number, role,
+                gender, date_of_birth, question1, question2, answer1, answer2
+     * @param response login.jsp
+     * @throws IOException 
+     */
     private void accountRegister(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String firstname, lastname, username, email, password, confpassword, phone_number, role,
                 gender, date_of_birth, question1, question2, answer1, answer2;
-        boolean hasError = false;
-        UserDAO dao;
-        User user;
 
         firstname = request.getParameter("fname").trim();
         lastname = request.getParameter("lname").trim();
@@ -169,119 +186,44 @@ public class AccountController extends HttpServlet {
         question2 = request.getParameter("question2").trim();
         answer1 = request.getParameter("answer1").trim();
         answer2 = request.getParameter("answer2").trim();
-
-        dao = new UserDAO();
-        user = new User();
-
-        user.setRole(role);
-        if (firstname.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Firstname is empty.");
-        } else {
-            user.setFirst_name(firstname);
+        
+        if (!password.equals(confpassword)) {
+            this.errors.add("New and Confirm password did not matched.");
+            response.sendRedirect(request.getContextPath() + "/account/register");
+            return;
         }
-        if (lastname.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Lastname is empty.");
-        } else {
-            user.setLast_name(lastname);
-        }
-        if (username.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Username is empty.");
-        } else {
-            if (dao.isUsernameAvailable(username)) {
-                user.setUsername(username);
-            } else {
-                hasError = true;
-                this.errors.add("Username already Taken.");
-            }
-        }
-        if (email.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Email is empty.");
-        } else {
-            user.setEmail(email);
-        }
-        if (password.equalsIgnoreCase("") && confpassword.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Password is empty.");
-        } else {
-            if (password.equals(confpassword)) {
-                if (password.length() >= 8) {
-                    user.setPassword(Helper.hashPassword(password));
-                } else {
-                    hasError = true;
-                    this.errors.add("Password length is less than 8 character.");
-                }
-            } else {
-                hasError = true;
-                this.errors.add("New and Confirm password did not matched.");
-            }
-        }
-        if (phone_number.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Phone number is empty.");
-        } else {
-            if (phone_number.matches("^(\\+977|[0-9])[0-9]{9,10}$")
-                    && (phone_number.length() == 10 || phone_number.length() == 14)) {
-                user.setPhone_number(phone_number);
-            } else {
-                hasError = true;
-                this.errors.add("Invalid phone number");
-            }
-        }
-        if (gender.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Gender is empty.");
-        } else {
-            user.setGender(gender);
-        }
-        if (date_of_birth.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Date of birth is empty.");
-        } else {
-            user.setDate_of_birth(date_of_birth);
-        }
-        if (question1.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Security question 1 is empty.");
-        } else {
-            user.setQuestion1(question1);
-        }
-        if (question2.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Security question 2 is empty.");
-        } else {
-            user.setQuestion2(question2);
-        }
-        if (answer1.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Answer is empty.");
-        } else {
-            user.setAnswer1(answer1);
-        }
-        if (answer2.equalsIgnoreCase("")) {
-            hasError = true;
-            this.errors.add("Answer is empty.");
-        } else {
-            user.setAnswer2(answer2);
-        }
-
-        if (!hasError) {
-            if (dao.createUser(user)) {
-                new HistoryDAO().keepLog(user.getUsername(), "User Register", "Registered to the system", request.getRemoteAddr());
+        
+        User registerUser = new User(username, password, firstname, lastname, role,
+                email, phone_number, date_of_birth, gender, question1, answer1, question2, answer2, null, null, "active");
+        
+        Object result = new AccountFunctions().verrifyRegister(registerUser);
+        
+        if(result.getClass().equals("".getClass())){
+            if(result.toString().equalsIgnoreCase("success")){
+                new HistoryDAO().keepLog(registerUser.getUsername(), "User Register", "Registered to the system", request.getRemoteAddr());
                 this.success = "User Registered. Please login to continue.";
                 response.sendRedirect(request.getContextPath() + "/account/login");
-            } else {
-                response.sendError(500, "Error While Creating a User.");
             }
-        } else {
-            response.sendRedirect(request.getContextPath() + "/account/register");
         }
-
+        else{
+            List errorList = (List) result;
+            if(errorList.get(errorList.size()-1).equals("sendError")){
+                response.sendError((int)errorList.get(0), errorList.get(1).toString());
+            }
+            else{
+                this.errors = errorList;
+                response.sendRedirect(request.getContextPath() + "/account/register");
+            }
+        }
     }
 
+    /**
+     * Function to check username to reset password.
+     * @param request parameter: username
+     * @param response forgetPasswordQuestions.jsp
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void forgetPasswordUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username;
         UserDAO dao;
@@ -305,7 +247,14 @@ public class AccountController extends HttpServlet {
             response.sendRedirect(request.getContextPath()+"/account/forgetpassword");
         }
     }
-
+    
+    /**
+     * Function to check the security questions for a user.
+     * @param request parameter: answer1, answer2, username
+     * @param response forgetPasswordNewpassword.jsp
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void forgetPasswordQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String answer1, answer2,username;
         User user;
@@ -339,6 +288,13 @@ public class AccountController extends HttpServlet {
  
     }
 
+    /**
+     * Function to reset the password.
+     * @param request parameter: password, confirmPassword, username
+     * @param response login.jsp
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void forgetPasswordNewpass(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String password, confirmPassword,username;
         UserDAO dao;
