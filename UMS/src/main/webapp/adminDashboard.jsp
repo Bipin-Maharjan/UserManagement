@@ -6,6 +6,9 @@
 <%@include file="base/lower-head.jsp" %>
 <Script>
     document.title = "Dashboard";
+    $(document).ready(function(){
+       $('#bdashboard').addClass("active"); 
+    });
 </Script>
 <%
     int mostActiveUserLimit = 10;

@@ -450,19 +450,25 @@ public class HistoryDAO {
     }
 
     /**
-    * This function will first query all the distinct username of not logout type records(i.e except logout) of previous 1 hrs
-    (1hrs can be changes to 5 min for more accurate result.Here 1 hrs means if someone forgot to logout and close browser 
-    then he/she will be shown online for 1 hrs more.)and check all the distinct username for their validity of online.
-    * for checking validity of online. The code will query the latest not logout record and the latest logout record 
-    and compare its id. If not logout records id is greater than logout records id then user is logged in else logged out.
-    * Here Linked hash map is used instead of Hash Table because linked hash map preserve the insertion order where as hash table does not.
-     * 
-     * @param page - Page Number  like 1,2
+     * This function will first query all the distinct username of not logout
+     * type records(i.e except logout) of previous 1 hrs (1hrs can be changes to
+     * 5 min for more accurate result.Here 1 hrs means if someone forgot to
+     * logout and close browser then he/she will be shown online for 1 hrs
+     * more.)and check all the distinct username for their validity of online.
+     * for checking validity of online. The code will query the latest not
+     * logout record and the latest logout record and compare its id. If not
+     * logout records id is greater than logout records id then user is logged
+     * in else logged out. Here Linked hash map is used instead of Hash Table
+     * because linked hash map preserve the insertion order where as hash table
+     * does not.
+     *
+     * @param page - Page Number like 1,2
      * @param sort - sorting order asc or desc
      * @return - LinkedHashMap containing username and date time.
-    **/
-    public LinkedHashMap<String,String> getOnlineUser(int page,String sort) {
-        String sql,starttime,endtime;
+     *
+     */
+    public LinkedHashMap<String, String> getOnlineUser(int page, String sort) {
+        String sql, starttime, endtime;
         Connection con = null;
         List<String> usernames = new ArrayList();
         LinkedHashMap<String, String> onlineDetails = new LinkedHashMap();
@@ -476,10 +482,10 @@ public class HistoryDAO {
         Calendar c = Calendar.getInstance();
         //year-month-day Hour-munute-second
         //REPLACE `c.add(Calendar.HOUR_OF_DAY, -1);` with `c.add(Calendar.MINUTE, -5);` for more accuracy
-        endtime = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH)+" "+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE)+":00";
+        endtime = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH) + " " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":00";
         c.add(Calendar.HOUR_OF_DAY, -1);
-        starttime = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH)+" "+(c.get(Calendar.HOUR_OF_DAY))+":"+c.get(Calendar.MINUTE)+":00";
-        
+        starttime = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH) + " " + (c.get(Calendar.HOUR_OF_DAY)) + ":" + c.get(Calendar.MINUTE) + ":00";
+
         try {
             con = Database.getDatabase().getConnection();
             sql = "select distinct(username) from history where date_time between ? and ? and type != 'logout' order by username " + sort + " limit ?,?;";
@@ -659,6 +665,7 @@ public class HistoryDAO {
                 logout = innerRs2.getInt("history_id");
 
                 if (logout > login) {
+                    //login and logout successfully
                     timespent = claculateTimeSpent(innerRs1.getString("date_time"), innerRs2.getString("date_time"));
                     History history = new History(innerRs1.getString("username"), innerRs1.getString("date_time"),
                             innerRs1.getString("type"), innerRs1.getString("remark"), innerRs1.getString("ip_address"));
@@ -689,6 +696,165 @@ public class HistoryDAO {
                     }
                 }
             });
+            Collections.reverse(histories);
+            return histories;
+        } catch (SQLException ex) {
+            Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /**
+     * Function for getting the LastLogins of the particular user.
+     *
+     * @param loginCount - no of last logins you want
+     * @param username - users username to get the last login history.
+     * @return list of history containing last login details
+     */
+    public List<History> getLastLogins(int loginCount, String username) {
+        Connection con = null;
+        String sql;
+        List<History> histories = new ArrayList();
+        try {
+            con = Database.getDatabase().getConnection();
+            sql = "Select * from history where username = ? order by date_time desc limit ?;";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, username);
+            st.setInt(2, loginCount);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                histories.add(new History(rs.getString("username"), rs.getString("date_time"),
+                        rs.getString("type"), rs.getString("remark"), rs.getString("ip_address")));
+            }
+            Collections.sort(histories, new Comparator<History>() {
+                @Override
+                public int compare(History o1, History o2) {
+                    try {
+                        return new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").parse(o1.getDate_time())
+                                .compareTo(new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").parse(o2.getDate_time()));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                        return 0;
+                    }
+                }
+            });
+            Collections.reverse(histories);
+            return histories;
+        } catch (SQLException ex) {
+            Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /**
+     * Function to get the last 7 days time spent of the passed user.
+     *
+     * @param username - username of the user
+     * @return list of history object only containing the `extra info` and
+     * `extra info 2`. `extra_info` contains time spent and `extra_info2`
+     * contains day.
+     */
+    public List<History> getLast7DaysTimeSpent(String username) {
+        String sql, startDate, endDate;
+        int day;
+        Connection con = null;
+        List<History> histories = new ArrayList();
+        PreparedStatement st;
+        ResultSet rs1, rs2;
+        Date date1, date2;
+
+        Calendar c = Calendar.getInstance();
+
+        try {
+            con = Database.getDatabase().getConnection();
+            for (int i = 0; i < 7; i++) {
+                History history = new History();
+                day = c.get(Calendar.DAY_OF_WEEK);
+                startDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                c.add(Calendar.DAY_OF_MONTH, -1);
+                endDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                sql = "select * from history where username = ? and date_time between ? and ? and type = 'login' order by date_time desc limit 1;";
+                st = con.prepareStatement(sql);
+                st.setString(1, username);
+                st.setString(2, endDate);
+                st.setString(3, startDate);
+                rs1 = st.executeQuery();
+
+                sql = "select * from history where username = ? and date_time between ? and ? and type != 'login' order by date_time desc limit 1;";
+                st = con.prepareStatement(sql);
+                st.setString(1, username);
+                st.setString(2, endDate);
+                st.setString(3, startDate);
+                rs2 = st.executeQuery();
+                if (rs1.next()) {
+                    rs2.next();
+                    //logout date - login date
+                    if (rs2.getInt("history_id") > rs1.getInt("history_id")) {
+                        //login and logout successfully
+                        try {
+                            //login
+                            date1 = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").parse(rs1.getString("date_time"));
+                            //logout
+                            date2 = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").parse(rs2.getString("date_time"));
+
+                            long diff = date2.getTime() - date1.getTime();
+                            int seconds = (int) (diff / 1000) % 60;
+                            int minutes = (int) ((diff / (1000 * 60)) % 60);
+                            int hours = (int) ((diff / (1000 * 60 * 60)) % 24);
+                            
+                            float timespent = minutes + hours * 60+(float)Math.round((seconds/60.0)*10)/10;
+                            history.setExtra_info(String.valueOf(timespent));
+
+                        } catch (ParseException ex) {
+                            Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        history.setExtra_info(String.valueOf(10));
+                    }
+                }
+                else{
+                    history.setExtra_info(String.valueOf(0));
+                }
+                switch (day) {
+                    case 1:
+                        history.setExtra_info2("Sunday");
+                        break;
+                    case 2:
+                        history.setExtra_info2("Monday");
+                        break;
+                    case 3:
+                        history.setExtra_info2("Tuesday");
+                        break;
+                    case 4:
+                        history.setExtra_info2("Wednesday");
+                        break;
+                    case 5:
+                        history.setExtra_info2("Thrusday");
+                        break;
+                    case 6:
+                        history.setExtra_info2("Friday");
+                        break;
+                    case 7:
+                        history.setExtra_info2("Saturday");
+                        break;
+                    default:
+                        history.setExtra_info2("ANON");
+                        break;
+                }
+                histories.add(history);
+            }
             Collections.reverse(histories);
             return histories;
         } catch (SQLException ex) {
@@ -769,8 +935,6 @@ public class HistoryDAO {
         String starttime = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
         c.add(Calendar.DAY_OF_MONTH, -7);
         String endtime = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + (c.get(Calendar.DAY_OF_MONTH));
-        System.out.println(endtime);
-        System.out.println(starttime);
         try {
             con = Database.getDatabase().getConnection();
             sql = "Select count(*) as count from history where type = 'User Register' or type = 'User added by Admin' and date_time between ? and ?;";
@@ -810,14 +974,6 @@ public class HistoryDAO {
             int seconds = (int) (diff / 1000) % 60;
             int minutes = (int) ((diff / (1000 * 60)) % 60);
             int hours = (int) ((diff / (1000 * 60 * 60)) % 24);
-            System.out.println(date2.toString() + "-" + date1.toString());
-            System.out.println(date2.getTime() + " - " + date1.getTime());
-            System.out.println(diff);
-            System.out.println(seconds);
-            System.out.println(minutes);
-            System.out.println(hours);
-            System.out.println("");
-            System.out.println("");
 
             if (hours == 0) {
                 if (minutes == 0) {

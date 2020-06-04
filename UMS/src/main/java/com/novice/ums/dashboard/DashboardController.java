@@ -35,8 +35,8 @@ public class DashboardController extends HttpServlet {
             viewPage(request, response, "/adminDashboard.jsp");
         }
         else{
-            clientDashboard(request,response);
-            viewPage(request, response, "/adminDashboard.jsp");
+            clientDashboard(request, user.getUsername());
+            viewPage(request, response, "/clientDashboard.jsp");
         }
     }
  
@@ -81,8 +81,12 @@ public class DashboardController extends HttpServlet {
         request.setAttribute("mostActiveUser", mostActiveUser);
     }
 
-    private void clientDashboard(HttpServletRequest request, HttpServletResponse response) {
-        
+    private void clientDashboard(HttpServletRequest request, String username) {
+        HistoryDAO historyDao = new HistoryDAO();
+        List<History> lastLogins = historyDao.getLastLogins(5, username);
+        List<History> userUsage = historyDao.getLast7DaysTimeSpent(username);
+        request.setAttribute("lastLogins", lastLogins);
+        request.setAttribute("userUsage", userUsage);
     }
     
     @Override

@@ -134,7 +134,7 @@ public class AccountController extends HttpServlet {
             User user = new UserDAO().getUser(username);
             request.getSession().setAttribute("user", user);
             new HistoryDAO().keepLog(user.getUsername(), "Login", "Logged in", request.getRemoteAddr());
-            response.sendRedirect(request.getContextPath() + "/profile");
+            response.sendRedirect(request.getContextPath() + "/dashboard");
         }
         else{
             this.errors.add(result);
