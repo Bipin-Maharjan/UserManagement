@@ -446,11 +446,15 @@ public class HistoryDAO {
 
     /**
     * This function will first query all the distinct username of not logout type records(i.e except logout) of previous 1 hrs
-    (1hrs can be changes to 5 min for more accurate result. Here 1 hrs means if someone forgot to logout and close browser 
+    (1hrs can be changes to 5 min for more accurate result.Here 1 hrs means if someone forgot to logout and close browser 
     then he/she will be shown online for 1 hrs more.)and check all the distinct username for their validity of online.
-    * for checking validity of online. the code will query, the latest not logout record and the latest logout record 
-    and compare its auto-increment id. If not logout id is greater than logout id then user is logged in.
+    * for checking validity of online. The code will query the latest not logout record and the latest logout record 
+    and compare its id. If not logout records id is greater than logout records id then user is logged in else logged out.
     * Here Linked hash map is used instead of Hash Table because linked hash map preserve the insertion order where as hash table does not.
+     * 
+     * @param page - Page Number  like 1,2
+     * @param sort - sorting order asc or desc
+     * @return - LinkedHashMap containing username and date time.
     **/
     public LinkedHashMap<String,String> getOnlineUser(int page,String sort) {
         String sql,starttime,endtime;
@@ -466,9 +470,10 @@ public class HistoryDAO {
         
         Calendar c = Calendar.getInstance();
         //year-month-day Hour-munute-second
-        //remove -1 from hour and add -5 in minute for more accuracy.
-        starttime = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH)+" "+(c.get(Calendar.HOUR_OF_DAY)-1)+":"+c.get(Calendar.MINUTE)+":00";
+        //REPLACE `c.add(Calendar.HOUR_OF_DAY, -1);` with `c.add(Calendar.MINUTE, -5);` for more accuracy
         endtime = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH)+" "+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE)+":00";
+        c.add(Calendar.HOUR_OF_DAY, -1);
+        starttime = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH)+" "+(c.get(Calendar.HOUR_OF_DAY))+":"+c.get(Calendar.MINUTE)+":00";
         
         try {
             con = Database.getDatabase().getConnection();
