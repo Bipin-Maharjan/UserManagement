@@ -12,6 +12,9 @@
 <%@include file="base/lower-head.jsp" %>
 <script>
     document.title = "Profile";
+    $(document).ready(function(){
+       $('#bprofile').addClass("active"); 
+    });
 </script>
 <div class="p-3" style="background-color: rgb(128, 146, 153);">
   <div class="bg-white">
