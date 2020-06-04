@@ -45,6 +45,11 @@ public class AccountFunctions {
         }
     }
     
+    /**
+     * Function for verifying and creating user in database user details before sign up.
+     * @param registerUser User Object with all the details
+     * @return Object of list if error and string "success" if user is created.
+     */
     public Object verrifyRegister(User registerUser){
         UserDAO dao = new UserDAO();
         User user = new User();

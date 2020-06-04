@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * This Servlet takes /UMS/ or "" URL patterns and redirect to login page.  
  * @author HP
  */
 @WebServlet(name = "IndexRedirect", urlPatterns = {""})
