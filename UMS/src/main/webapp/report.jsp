@@ -83,6 +83,9 @@
 %>
 <script>
     document.title = "Report";
+    $(document).ready(function(){
+       $('#breport').addClass("active"); 
+    });
 </script>
 <div style="background-color: rgb(157, 163, 165);">
   <div class="container" style="background-color: white;">
