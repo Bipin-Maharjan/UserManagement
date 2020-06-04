@@ -442,6 +442,36 @@ public class UserDAO {
         }
     }
     
+    /**
+     * Function to get the total count of the passed role.
+     * @param role - user role (admin/client)
+     * @return - total count
+     */
+    public int totalUserCount(String role){
+        Connection con = null;
+        String sql;
+        try {
+            con = Database.getDatabase().getConnection();
+            sql = "Select count(*) as count from user where role = ? ;";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, role);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int userCount = rs.getInt("count");
+            return userCount;
+        } catch (SQLException ex) {
+            Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     private List convertRSToUser(ResultSet rs) throws SQLException{
         List users = new ArrayList();
         while(rs.next()){

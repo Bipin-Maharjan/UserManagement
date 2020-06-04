@@ -37,7 +37,7 @@ public class Database {
     
     private void setConnection(){
             String user ="root";
-            String url = "jdbc:mysql://localhost:3306/ums?serverTimezone=UTC";
+            String url = "jdbc:mysql://localhost:3308/ums?serverTimezone=UTC";
             String password = "";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

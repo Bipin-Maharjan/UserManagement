@@ -17,6 +17,8 @@ public class History {
     private String type;
     private String remark;
     private String ip_address;
+    private String extra_info;
+    private String extra_info2;
     
     public History(){
         this.history_id = 0;
@@ -88,5 +90,22 @@ public class History {
 
     public void setIp_address(String ip_address) {
         this.ip_address = ip_address;
-    }    
+    } 
+
+    public String getExtra_info() {
+        return extra_info;
+    }
+
+    public void setExtra_info(String extra_info) {
+        this.extra_info = extra_info;
+    }
+
+    public String getExtra_info2() {
+        return extra_info2;
+    }
+
+    public void setExtra_info2(String extra_info2) {
+        this.extra_info2 = extra_info2;
+    }
+    
 }
