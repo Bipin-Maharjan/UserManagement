@@ -44,4 +44,8 @@ ALTER TABLE `history`
 
 ALTER TABLE `history`
   ADD CONSTRAINT `username_fk` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+INSERT INTO `user` (`username`, `password`, `first_name`, `last_name`, `role`, `email`, `phone_number`, `date_of_birth`, `gender`, `question1`, `answer1`, `question2`, `answer2`, `profile_picture`, `bio`, `status`) VALUES
+('admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'Admin', 'Manager', 'admin', 'admin@gmail.com', 9807654321, '2020-04-01', 'male', 'What was the name of your first pet?', 'No pet', 'What is your dream job?', 'IT', NULL, NULL, 'active');
+  
 COMMIT;
