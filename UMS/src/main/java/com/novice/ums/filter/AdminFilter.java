@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author HP
+ * This filter is for checking if the user is logged in or not and also admin or not.
  */
 @WebFilter(filterName = "AdminFilter", urlPatterns = {"/report/*","/adduser/*"})
 public class AdminFilter implements Filter {

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author HP
+ * this filter is to prevent the login user from seeing the login, register page.
  */
 @WebFilter(filterName = "AccountsFilter", urlPatterns = {"/account/*"})
 public class AccountsFilter implements Filter {

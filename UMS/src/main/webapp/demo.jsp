@@ -5,7 +5,7 @@
 <%--<%@include file="base/lower-head-nologin.jsp" %>--%> 
 only for login page, sign up, forget password and guest page
 <!--your HTML code here-->
-
+<!--this is the base template. start building application here-->
 <!--HTML code here-->
 <%@include file="base/footer.jsp" %>
 <!--add js for this page below-->

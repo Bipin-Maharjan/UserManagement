@@ -40,11 +40,11 @@ public class DashboardController extends HttpServlet {
         }
     }
  
-   @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-           throws ServletException, IOException {
-       response.sendError(404, "Page not found for post request");
-   }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendError(404, "Page not found for post request");
+    }
    
    /**
      * Function for forwarding dispatcher request for another page.

@@ -19,7 +19,7 @@
             </a>
           </li>
           <li class="nav-item text-right my-2 b_width_100_xs_lg" style="flex-grow: 1;">
-            <a class="navbar-brand mr-0" style="font-size: 1rem;" href="#">
+            <a class="navbar-brand mr-0" style="font-size: 1rem;" href="<%= request.getContextPath()+"/about" %>">
               <span class="align-middle btn btn-primary">About Us</span>
             </a>
           </li>
