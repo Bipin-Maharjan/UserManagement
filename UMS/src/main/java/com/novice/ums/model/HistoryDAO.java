@@ -655,14 +655,22 @@ public class HistoryDAO {
                         + "order by history.date_time desc limit 1;");
                 st.setString(1, username);
                 innerRs1 = st.executeQuery();
-                innerRs1.next();
-                login = innerRs1.getInt("history_id");
+                if(innerRs1.next()){
+                    login = innerRs1.getInt("history_id");
+                }
+                else{
+                    login = 0;
+                }
 
                 st = con.prepareStatement("select * from history where username = ? and type != 'login' order by date_time desc limit 1;");
                 st.setString(1, username);
                 innerRs2 = st.executeQuery();
-                innerRs2.next();
-                logout = innerRs2.getInt("history_id");
+                if(innerRs2.next()){
+                    logout = innerRs2.getInt("history_id");
+                }
+                else{
+                    logout = 0;
+                }
 
                 if (logout > login) {
                     //login and logout successfully
@@ -723,7 +731,7 @@ public class HistoryDAO {
         List<History> histories = new ArrayList();
         try {
             con = Database.getDatabase().getConnection();
-            sql = "Select * from history where username = ? order by date_time desc limit ?;";
+            sql = "Select * from history where username = ? and type = 'login' order by date_time desc limit ?;";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, username);
             st.setInt(2, loginCount);

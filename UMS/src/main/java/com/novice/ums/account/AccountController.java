@@ -211,6 +211,7 @@ public class AccountController extends HttpServlet {
                 response.sendError((int)errorList.get(0), errorList.get(1).toString());
             }
             else{
+                errorList.remove(errorList.size()-1);
                 this.errors = errorList;
                 response.sendRedirect(request.getContextPath() + "/account/register");
             }

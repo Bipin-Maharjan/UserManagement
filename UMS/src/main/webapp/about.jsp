@@ -98,9 +98,9 @@
                 <p>We use the information we collect in various ways, including to:</p>
 
                 <ul>
-                  <li>Provide, operate, and maintain our webste</li>
-                  <li>Improve, personalize, and expand our webste</li>
-                  <li>Understand and analyze how you use our webste</li>
+                  <li>Provide, operate, and maintain our website</li>
+                  <li>Improve, personalize, and expand our website</li>
+                  <li>Understand and analyze how you use our website</li>
                   <li>Develop new products, services, features, and functionality</li>
                   <li>Send you emails</li>
                   <li>Find and prevent fraud</li>
