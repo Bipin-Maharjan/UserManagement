@@ -767,7 +767,9 @@ public class HistoryDAO {
     }
 
     /**
-     * Function to get the last 7 days time spent of the passed user.
+     * Function to get the last 7 days time spent of the passed user. 
+     * if user forget to logout then default time will be 10 minute.
+     * This do not show current days time usage
      *
      * @param username - username of the user
      * @return list of history object only containing the `extra info` and
@@ -789,10 +791,10 @@ public class HistoryDAO {
             con = Database.getDatabase().getConnection();
             for (int i = 0; i < 7; i++) {
                 History history = new History();
-                day = c.get(Calendar.DAY_OF_WEEK);
                 startDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
                 c.add(Calendar.DAY_OF_MONTH, -1);
                 endDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                day = c.get(Calendar.DAY_OF_WEEK);
                 sql = "select * from history where username = ? and date_time between ? and ? and type = 'login' order by date_time desc limit 1;";
                 st = con.prepareStatement(sql);
                 st.setString(1, username);
@@ -824,7 +826,7 @@ public class HistoryDAO {
                             
                             float timespent = minutes + hours * 60+(float)Math.round((seconds/60.0)*10)/10;
                             history.setExtra_info(String.valueOf(timespent));
-
+                            
                         } catch (ParseException ex) {
                             Logger.getLogger(HistoryDAO.class.getName()).log(Level.SEVERE, null, ex);
                         }
