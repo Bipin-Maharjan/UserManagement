@@ -73,7 +73,7 @@
               <a href="<%= request.getContextPath()%>/profile?user=<%= searchedUser.getUsername()%>">
                 <div class="row mx-2 py-3 mt-3 border">
                   <div class="col-2 text-center">
-                    <% if (user.getProfile_picture() != null) {%>
+                    <% if (searchedUser.getProfile_picture() != null) {%>
                     <img
                         src="${pageContext.request.contextPath}/resources/profile/<%= searchedUser.getProfile_picture()%>"
                         alt="profile picture"

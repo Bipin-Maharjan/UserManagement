@@ -32,22 +32,22 @@
                 </a>
               </li>
               <li>
-                <a href="#" data-toggle="tooltip" data-placement="right" title="No Link">
+                <a href="https://www.facebook.com/pradiprai345" data-toggle="tooltip" data-placement="right" title="Facebook Profile">
                   Kisan Rai
                 </a>
               </li>
               <li>
-                <a href="#" data-toggle="tooltip" data-placement="right" title="No Link">
+                <a href="https://www.linkedin.com/in/ishwor-pokhrel-4a1666128/" data-toggle="tooltip" data-placement="right" title="Linkedin Profile">
                   Ishwor Pokhrel
                 </a>
               </li>
               <li>
-                <a href="#" data-toggle="tooltip" data-placement="right" title="No Link">
+                <a href="https://www.facebook.com/profile.php?id=100006424789641" data-toggle="tooltip" data-placement="right" title="Facebook Profile">
                   Dipak Rai
                 </a>
               </li>
               <li>
-                <a href="#" data-toggle="tooltip" data-placement="right" title="No Link">
+                <a href="https://www.facebook.com/luza.maharjan.988" data-toggle="tooltip" data-placement="right" title="Facebook Profile">
                   Luza Maharjan
                 </a>
               </li>
