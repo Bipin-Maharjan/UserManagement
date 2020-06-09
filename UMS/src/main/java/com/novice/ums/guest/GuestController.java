@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author HP
+ * Controller to show the guest page
  */
 @WebServlet(name = "GuestController", urlPatterns = {"/about/*"})
 public class GuestController extends HttpServlet {

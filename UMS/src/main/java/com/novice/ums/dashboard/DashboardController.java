@@ -81,6 +81,11 @@ public class DashboardController extends HttpServlet {
         request.setAttribute("mostActiveUser", mostActiveUser);
     }
 
+    /**
+     * Function to gather the required information to show the client dashboard. 
+     * @param request
+     * @param username client username 
+     */
     private void clientDashboard(HttpServletRequest request, String username) {
         HistoryDAO historyDao = new HistoryDAO();
         List<History> lastLogins = historyDao.getLastLogins(5, username);

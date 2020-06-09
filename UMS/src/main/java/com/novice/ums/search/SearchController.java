@@ -74,6 +74,15 @@ public class SearchController extends HttpServlet {
         response.sendError(404, "Page not found for post request");
     }
 
+    /**
+     * Function for forwarding dispatcher request for another page.
+     * 
+     * @param request Request variable
+     * @param response Response Variable
+     * @param page JSP Page name to redirect
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void viewPage(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);

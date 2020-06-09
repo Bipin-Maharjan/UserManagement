@@ -194,13 +194,15 @@ public class AccountController extends HttpServlet {
         }
         
         User registerUser = new User(username, password, firstname, lastname, role,
-                email, phone_number, date_of_birth, gender, question1, answer1, question2, answer2, null, null, "active");
+                email, phone_number, date_of_birth, gender, question1, answer1, 
+                question2, answer2, null, null, "active");
         
         Object result = new AccountFunctions().verrifyRegister(registerUser);
         
         if(result.getClass().equals("".getClass())){
             if(result.toString().equalsIgnoreCase("success")){
-                new HistoryDAO().keepLog(registerUser.getUsername(), "User Register", "Registered to the system", request.getRemoteAddr());
+                new HistoryDAO().keepLog(registerUser.getUsername(), "User Register", "Registered to the system", 
+                        request.getRemoteAddr());
                 this.success = "User Registered. Please login to continue.";
                 response.sendRedirect(request.getContextPath() + "/account/login");
             }
@@ -225,7 +227,8 @@ public class AccountController extends HttpServlet {
      * @throws ServletException
      * @throws IOException 
      */
-    private void forgetPasswordUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void forgetPasswordUsername(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         String username;
         UserDAO dao;
         User user;
@@ -256,7 +259,8 @@ public class AccountController extends HttpServlet {
      * @throws IOException
      * @throws ServletException 
      */
-    private void forgetPasswordQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void forgetPasswordQuestion(HttpServletRequest request, HttpServletResponse response) 
+            throws IOException, ServletException {
         String answer1, answer2,username;
         User user;
         answer1 = request.getParameter("answer1");
@@ -296,7 +300,8 @@ public class AccountController extends HttpServlet {
      * @throws IOException
      * @throws ServletException 
      */
-    private void forgetPasswordNewpass(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void forgetPasswordNewpass(HttpServletRequest request, HttpServletResponse response) 
+            throws IOException, ServletException {
         String password, confirmPassword,username;
         UserDAO dao;
         User user;
@@ -321,7 +326,8 @@ public class AccountController extends HttpServlet {
                     response.sendError(500, "Databse Error while Changing password");
                     return;
                 }
-                new HistoryDAO().keepLog(user.getUsername(), "Password changed", "Password changed via forget password", request.getRemoteAddr());
+                new HistoryDAO().keepLog(user.getUsername(), "Password changed", "Password changed via forget password",
+                        request.getRemoteAddr());
                 if(this.errors.isEmpty()){
                     this.success = "Password Changed Successfully";
                 }

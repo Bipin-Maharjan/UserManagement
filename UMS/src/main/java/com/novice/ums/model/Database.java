@@ -20,10 +20,15 @@ public class Database {
     private static Database db=null;
     private Connection con;
     
-    //this cannot be accessed
+    /**
+     * Private Constructor so that no new instance is created.
+     */
     private Database(){}
     
-    //use this for creatingobjects
+    /**
+     * Function to get instance of Database class
+     * @return Object of Database Class
+     */
     public static Database getDatabase(){
         if(db == null){
             db = new Database();
@@ -35,6 +40,9 @@ public class Database {
         }
     }
     
+    /**
+     * Function to make connection to the Database
+     */
     private void setConnection(){
             String user ="root";
             String url = "jdbc:mysql://localhost:3308/ums?serverTimezone=UTC";
@@ -47,6 +55,11 @@ public class Database {
         }
     }
 
+    /**
+     * Function get database Connection object
+     * @return Connection object
+     * @throws SQLException 
+     */
     public Connection getConnection() throws SQLException {
         if(this.con == null ||  this.con.isClosed()){
             setConnection();

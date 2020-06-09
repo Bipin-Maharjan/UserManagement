@@ -245,11 +245,27 @@ public class HistoryController extends HttpServlet {
         }
     }
 
+    /**
+     * Function for forwarding dispatcher request for another page.
+     * 
+     * @param request Request variable
+     * @param response Response Variable
+     * @param page JSP Page name to redirect
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void viewPage(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
-
+    
+    /**
+     * Function to get all history of the system
+     * @param response
+     * @param page page no
+     * @return list of History object
+     * @throws IOException 
+     */
     private List getAllHistories(HttpServletResponse response, int page) throws IOException {
         List histories = new HistoryDAO().getAllHistroy(page);
         // if there is any error in UserDAO  otherUser will be null
@@ -260,6 +276,14 @@ public class HistoryController extends HttpServlet {
         return histories;
     }
 
+    /**
+     * Function to get all history with type filter
+     * @param response
+     * @param type history type
+     * @param page page no
+     * @return list of history
+     * @throws IOException 
+     */
     private List getAllHistories(HttpServletResponse response, String type, int page) throws IOException {
         List histories = new HistoryDAO().getAllHistroy(type, page);
         // if there is any error in UserDAO  otherUser will be null
@@ -270,6 +294,14 @@ public class HistoryController extends HttpServlet {
         return histories;
     }
 
+    /**
+     * Function to getHistories of a selected user
+     * @param response
+     * @param username user username
+     * @param page page no
+     * @return list of histories
+     * @throws IOException 
+     */
     private List getHistories(HttpServletResponse response, String username, int page) throws IOException {
         List histories = new HistoryDAO().getHistroy(username, page);
         // if there is any error in UserDAO  otherUser will be null
@@ -280,6 +312,15 @@ public class HistoryController extends HttpServlet {
         return histories;
     }
 
+    /**
+     * Function to getHistories of user with the type filer.
+     * @param response
+     * @param username user username
+     * @param type history type
+     * @param page page no
+     * @return list of histories
+     * @throws IOException 
+     */
     private List getHistories(HttpServletResponse response, String username, String type, int page) throws IOException {
         List histories = new HistoryDAO().getHistroy(username, type, page);
         // if there is any error in UserDAO  otherUser will be null
@@ -290,6 +331,13 @@ public class HistoryController extends HttpServlet {
         return histories;
     }
 
+    /**
+     * Function to get Column type of the selected user history
+     * @param response
+     * @param username user username
+     * @return list of column type
+     * @throws IOException 
+     */
     private List getColumnTypes(HttpServletResponse response, String username) throws IOException {
         List types = new HistoryDAO().getColumnTypesFromRS(username);
         if (types == null) {
@@ -299,6 +347,12 @@ public class HistoryController extends HttpServlet {
         return types;
     }
 
+    /**
+     * Function in get Column type of all history.
+     * @param response
+     * @return list of column type
+     * @throws IOException 
+     */
     private List getColumnTypes(HttpServletResponse response) throws IOException {
         List types = new HistoryDAO().getColumnTypesFromRS();
         if (types == null) {
@@ -308,6 +362,13 @@ public class HistoryController extends HttpServlet {
         return types;
     }
 
+    /**
+     * Function to get the history column type of the search string
+     * @param response
+     * @param search
+     * @return list of column type 
+     * @throws IOException 
+     */
     private List getColumnTypesOfSearch(HttpServletResponse response, String search) throws IOException {
         List types = new HistoryDAO().getSearchColumnTypesFromRS(search);
         if (types == null) {
@@ -317,6 +378,15 @@ public class HistoryController extends HttpServlet {
         return types;
     }
 
+    /**
+     * Function to get Searched in history with type filter
+     * @param response
+     * @param search search query
+     * @param type history type
+     * @param page page no
+     * @return list of history
+     * @throws IOException 
+     */
     private List getSearchHistories(HttpServletResponse response, String search, String type, int page) throws IOException {
         List histories = new HistoryDAO().searchHistory(search, type, page);
         // if there is any error in UserDAO  otherUser will be null
@@ -327,6 +397,14 @@ public class HistoryController extends HttpServlet {
         return histories;
     }
 
+    /**
+     * Function to get all Searched history
+     * @param response
+     * @param search search string
+     * @param page page no
+     * @return list of history
+     * @throws IOException 
+     */
     private List getSearchHistories(HttpServletResponse response, String search, int page) throws IOException {
         List histories = new HistoryDAO().searchHistory(search, page);
         // if there is any error in UserDAO  otherUser will be null

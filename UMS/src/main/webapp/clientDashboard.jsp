@@ -113,7 +113,7 @@
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: "Hours",
+                                labelString: "Minutes",
                                 fontColor: textcolor,
                                 fontSize: 16,
                             },

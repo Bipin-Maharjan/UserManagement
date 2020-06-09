@@ -20,7 +20,11 @@ import java.util.logging.Logger;
  */
 public class UserDAO {
 
-    // Fetch user from database and map the resultset data with object;
+    /**
+     * Function to fetch user from database
+     * @param username user username
+     * @return User Object
+     */
     public User getUser(String username) {
         User user = null;
         Connection con = null;
@@ -49,7 +53,12 @@ public class UserDAO {
         return user;
     }
 
-    //to update the user
+    /**
+     * Function to check for the change in passed object and update to database.
+     * @param updateUser User object
+     * @param username user username
+     * @return updated User object
+     */
     public User updateUser(User updateUser, String username) {
         Connection con = null;
         List<String> changes = new ArrayList<String>();
@@ -205,6 +214,11 @@ public class UserDAO {
         return updateUser;
     }
 
+    /**
+     * Function to delete User.
+     * @param username user username
+     * @return true if success and false if failed
+     */
     public boolean deleteUser(String username) {
         Connection con = null;
         try {
@@ -225,6 +239,11 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Function to check in passed username is available or not.
+     * @param username user username
+     * @return true if available and false if not available
+     */
     public boolean isUsernameAvailable(String username) {
         Connection con = null;
         boolean value = false;
@@ -248,6 +267,11 @@ public class UserDAO {
         return value;
     }
 
+    /**
+     * Function to create a user in database.
+     * @param user User Object
+     * @return true success and false in failed
+     */
     public boolean createUser(User user) {
         Connection con = null;
         try {
@@ -285,6 +309,11 @@ public class UserDAO {
 
     }
     
+    /**
+     * Function to get total possible page Number of users with selected role.
+     * @param role user role
+     * @return total page number
+     */
     public int getPagesNo(String role){
         Connection con = null;
         String sql;
@@ -311,6 +340,13 @@ public class UserDAO {
         }
     }
     
+    /**
+     * Function to fetch users based on role.
+     * @param page page no
+     * @param role user role
+     * @param sort sort type (asc / desc )
+     * @return list of user
+     */
     public List fetchUser(int page,String role, String sort){
         String sql;
         Connection con=null;
@@ -343,7 +379,7 @@ public class UserDAO {
     /**
      * 
      * @param search is a search keyword.
-     * @param filter is Nullable
+     * @param role user role
      * @param page starts from 1.
      * @return List searchedUsers
      */
@@ -396,6 +432,12 @@ public class UserDAO {
         }
     }
     
+    /**
+     * Function to get total possible page of a search query.
+     * @param search search query
+     * @param role role of user
+     * @return total page number
+     */
     public int totalSearchPages(String search,String role){
         String sql;
         Connection con=null;
@@ -472,6 +514,12 @@ public class UserDAO {
         }
     }
     
+    /**
+     * Function to convert Result Set into list of User
+     * @param rs Result Set object
+     * @return list of User
+     * @throws SQLException 
+     */
     private List convertRSToUser(ResultSet rs) throws SQLException{
         List users = new ArrayList();
         while(rs.next()){

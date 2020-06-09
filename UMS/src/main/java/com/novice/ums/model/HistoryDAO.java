@@ -27,6 +27,13 @@ import java.util.logging.Logger;
  */
 public class HistoryDAO {
 
+    /**
+     * Function to insert log in to history table
+     * @param username user username
+     * @param type history type
+     * @param remark remark
+     * @param ip_address ip_address
+     */
     public void keepLog(String username, String type, String remark, String ip_address) {
         Connection con = null;
         try {
@@ -49,6 +56,10 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get total possible page no of history data. One page Contains 15 records.
+     * @return total page number
+     */
     public int getAllNoOfPages() {
         Connection con = null;
         String sql;
@@ -73,6 +84,11 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get total possible page number of certain history type.
+     * @param type history type
+     * @return total page number
+     */
     public int getAllNoOfPages(String type) {
         Connection con = null;
         String sql;
@@ -98,6 +114,11 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get total possible page number of one users history.
+     * @param username user username
+     * @return total page number
+     */
     public int getNoOfPages(String username) {
         Connection con = null;
         String sql;
@@ -123,6 +144,12 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get total possible page number of user history with type.
+     * @param username user username
+     * @param type history type
+     * @return 
+     */
     public int getNoOfPages(String username, String type) {
         Connection con = null;
         String sql;
@@ -149,6 +176,12 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get total possible page number of a search query with a history type
+     * @param search search query
+     * @param type history type
+     * @return total page number
+     */
     public int getNoOfSearchPages(String search, String type) {
         Connection con = null;
         String sql;
@@ -175,6 +208,11 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * FUnction to get total possible page number of a search query.
+     * @param search search query
+     * @return total page number
+     */
     public int getNoOfSearchPages(String search) {
         Connection con = null;
         String sql;
@@ -200,6 +238,11 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get all history from history table
+     * @param page page no
+     * @return list of histories
+     */
     public List getAllHistroy(int page) {
         String sql;
         Connection con = null;
@@ -227,6 +270,12 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get all history of certain history type.
+     * @param type history type
+     * @param page page no
+     * @return list of History
+     */
     public List getAllHistroy(String type, int page) {
         String sql;
         Connection con = null;
@@ -255,6 +304,12 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get history of selected user.
+     * @param username user username
+     * @param page page no
+     * @return list of history
+     */
     public List getHistroy(String username, int page) {
         String sql;
         Connection con = null;
@@ -283,6 +338,13 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get history of selected user with history type filter.
+     * @param username user username
+     * @param type history type
+     * @param page page no
+     * @return list of history
+     */
     public List getHistroy(String username, String type, int page) {
         String sql;
         Connection con = null;
@@ -312,6 +374,12 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get history of searched query.
+     * @param searchquery search query
+     * @param page page no
+     * @return list of history
+     */
     public List searchHistory(String searchquery, int page) {
         String sql;
         Connection con = null;
@@ -340,6 +408,13 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get history of searched query with history filter
+     * @param searchquery search query
+     * @param type history type
+     * @param page page no
+     * @return list of history
+     */
     public List searchHistory(String searchquery, String type, int page) {
         String sql;
         Connection con = null;
@@ -369,6 +444,10 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get history column type.
+     * @return list of columns
+     */
     public List getColumnTypesFromRS() {
         String sql;
         Connection con = null;
@@ -395,6 +474,11 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get history column type of certain user
+     * @param username user username
+     * @return lust of column
+     */
     public List getColumnTypesFromRS(String username) {
         String sql;
         Connection con = null;
@@ -422,6 +506,11 @@ public class HistoryDAO {
         }
     }
 
+    /**
+     * Function to get column type of search keyword.
+     * @param search search query
+     * @return list of column
+     */
     public List getSearchColumnTypesFromRS(String search) {
         String sql;
         Connection con = null;
@@ -598,6 +687,13 @@ public class HistoryDAO {
 
     }
 
+    /**
+     * Function to history data of the given date range
+     * @param startDate date in string '2020-12-26'
+     * @param endDate date in string '2020-12-26'
+     * @param type history type
+     * @return list of history
+     */
     public List<History> getDateRangeData(String startDate, String endDate, String type) {
         String sql;
         Connection con = null;
@@ -1012,6 +1108,12 @@ public class HistoryDAO {
         return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
 
+    /**
+     * Function to convert history ResultSet into list of history
+     * @param rs ResultSet object
+     * @return list of history
+     * @throws SQLException 
+     */
     private List convertRSToHistory(ResultSet rs) throws SQLException {
         List histories = new ArrayList();
         while (rs.next()) {

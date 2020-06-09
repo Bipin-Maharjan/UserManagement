@@ -166,7 +166,8 @@ public class AddUserServelet extends HttpServlet {
 
         if (!hasError) {
             if (dao.createUser(user)) {
-                new HistoryDAO().keepLog(logged_in_user.getUsername(), "User added by Admin", "'"+user.getUsername()+"' added by admin with role '"+role+"'.", request.getRemoteAddr());
+                new HistoryDAO().keepLog(logged_in_user.getUsername(), "User added by Admin",
+                        "'"+user.getUsername()+"' added by admin with role '"+role+"'.", request.getRemoteAddr());
                 this.success = "User Successfully added.";
                 response.sendRedirect(request.getContextPath() + "/adduser");
             } else {
@@ -177,10 +178,18 @@ public class AddUserServelet extends HttpServlet {
         }
     }
 
+    /**
+     * Function for forwarding dispatcher request for another page.
+     * 
+     * @param request Request variable
+     * @param response Response Variable
+     * @param page JSP Page name to redirect
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void viewPage(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
         request.setAttribute("errors", this.errors);
         request.setAttribute("success",this.success);
-        System.out.println(this.success);
         this.success = "";
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);

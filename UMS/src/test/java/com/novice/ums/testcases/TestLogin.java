@@ -28,7 +28,7 @@ public class TestLogin {
         if(!new UserDAO().isUsernameAvailable("test.test")){
             new UserDAO().deleteUser("test.test");
         }
-        // add user to test
+        // add user for testing
         User registerUser = new User("test.test", "test12345678", "test", "test", "admin",
                 "test@test.com", "1234567890", "2020-05-11", "Male",
                 "What is the first name of your best friend in high school?", "t1",

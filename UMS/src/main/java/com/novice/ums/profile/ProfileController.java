@@ -115,6 +115,13 @@ public class ProfileController extends HttpServlet {
         }
     }
 
+    /**
+     * Function to upload ProfilePicture.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void uploadProfilePicture(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /*
         * This will handel the profile picture upload with verification of image
@@ -185,6 +192,12 @@ public class ProfileController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/profile");
     }
 
+    /**
+     * Function to update Details of the user.
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     private void updateDetails(HttpServletRequest request, HttpServletResponse response) throws IOException{
         List list = new ArrayList();
         
@@ -307,7 +320,13 @@ public class ProfileController extends HttpServlet {
         
         response.sendRedirect(request.getContextPath() + "/profile/editprofile");
     }
-            
+    
+    /**
+     * Function to change password.
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     private void changePassword(HttpServletRequest request, HttpServletResponse response) throws IOException{
         List list  = new ArrayList();
         
@@ -362,6 +381,12 @@ public class ProfileController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/profile/editprofile");
     }
     
+    /**
+     * Function to change security question.
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     private void changeQuestions(HttpServletRequest request, HttpServletResponse response) throws IOException{
         List list = new ArrayList();
         
@@ -460,6 +485,15 @@ public class ProfileController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/profile/editprofile");
     }
     
+    /**
+     * Function for forwarding dispatcher request for another page.
+     * 
+     * @param request Request variable
+     * @param response Response Variable
+     * @param page JSP Page name to redirect
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void viewPage(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
         request.setAttribute("errors", this.errors);
         request.setAttribute("success", this.success);
@@ -468,6 +502,14 @@ public class ProfileController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    /**
+     * Function to check URL and trigger operations of Block,Active and Delete
+     * @param request
+     * @param response
+     * @param username
+     * @param operation
+     * @throws IOException 
+     */
     private void doOperation(HttpServletRequest request, HttpServletResponse response, String username, String operation) throws IOException {
         User otherUser = null;
 
@@ -523,7 +565,11 @@ public class ProfileController extends HttpServlet {
         }
     }
     
-    //only foe edit operations
+    /**
+     * Function to manage error of Edit Operation because there is 3 different error box.
+     * @param index 
+     * @param list error list
+     */
     private void manageError(int index, List list){
         List empty_list = new ArrayList();
         switch(index){
